@@ -137,6 +137,10 @@
                                         <label for ="subscribeToMailChimp">Subscribe to our Newsletter</label>
                                         <% } %>
                                         <br/><br/>
+                                        <span class='animation animated-item-1 benefits-caption'><b><font size='+1'>
+                                                    VPT is open source! <a id="benefits_link" class="link" style="text-decoration:underline">Click here for benefits.</a>
+                                                    <!--"Give me a lever long enough ... and I will move the world," Archimedes, 230 BC. -->
+                                                </font></b></span>
                                         <p><b>Want to install VPT in your own servers/private cloud? Contact us at contact [AT] shelloid [DOT] com.</b></p>
                                     </div>
                                     <!--
@@ -321,31 +325,21 @@
         </div><!--/.row-->
     </div>
 </section>
-<div id='benefits' aria-hidden='true' aria-labelledby='benefitsLabel' role='dialog' tabindex='-1' class='modal fade'>
-    <div class='modal-dialog benefits-dialog'>
-        <div class='modal-content benefits-dialog-content'>
+
+<div id='cumuloid' aria-hidden='true' aria-labelledby='cumuloidLabel' role='dialog' tabindex='-1' class='modal fade'>
+    <div class='modal-dialog cumuloid-dialog'>
+        <div class='modal-content cumuloid-dialog-content'>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="benefitsLabel">We give you Power &amp; Simplicity</h4>
+                <h4 class="modal-title" id="cumuloidLabel">VPT &amp; Open Source: Benefits</h4>
             </div>
             <div class='modal-body'>
-                Your shelloid streaming queries can contain embedded actions (e.g., send an SMS/email, tweet on your
-                behalf, post to a URL, raise an alarm, or drive an actuator) and are edge-computed by our platform,
-                i.e., are computed at Internet-connected devices (e.g,. smartphones) that are physically close to the
-                sensors. This enables:
-                <ul>
-                    <li> Smart disconnected operation - urgent responses can be made to sensor events even when there is
-                        disruption in Internet connectivity. Application-specific priorities can be attached to what
-                        data to keep and what to discard to minimize information loss in the case of longer disconnects
-                        resulting in transmit buffer overflows.
-                    </li>
-                    <li>Bandwidth optimization - Queries filter relevant information in an application-specific manner
-                        and transmit only the relevant information to our back-end cloud.
-                    </li>
-                    <li>Better real-time response - Quick local real-time responses can be made to sensor events without
-                        requiring Internet/back-end cloud always to be in the event-response loop.
-                    </li>
-                </ul>
+                <p>Unlike VPNs, VPT does not provide network-level access between participating devices.  As a result VPT users are not vulnerable to firewall misconfigurations and do not have to deal with complex firewall rules for security. Moreover, any potential compromises in a participating system has much lesser impact on other systems since the network perimeter is not extended to include all the participating devices. </p>
+                <p>
+                    In a VPT system, users explicitly choose to share local service ports with other users via a user-friendly web interface.  VPT internally works using a novel secure multi-hop port-forwarding technique by setting up virtual on-demand end-to-end tunnels carrying transport-layer data (VPN tunnels carry network-layer data). The shared service ports become available to the other party as local ports to which locally running applications can securely connect.</p>
+                <p>
+                    By design, VPT is based on three fundamental principles of practical secure systems - Principle of least privilege, secure by default (both - thanks to on-demand tunnels carrying transport-layer data), and ease of use (thanks to the web interface).</p>
+                <p>Being an open source project means that more people can get benefit from our technology with lesser total cost of ownership. In a nutshell, open source results in more reliability, stability, auditability, lesser cost, more flexibility and freedom, as well as more support and accountability [<a href="http://open-source.gbdirect.co.uk/migration/benefit.html" target="_blank">Source</a>].
             </div>
         </div>
     </div>
@@ -363,6 +357,9 @@
 			e.preventDefault();
             alert("Our Indiegogo Campaign will be launching soon!");
         });
+        $("#benefits_link").click(
+                function(){$('#cumuloid').modal('show');}
+        );
     });
 
     function placeVideo() {
