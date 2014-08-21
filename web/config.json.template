@@ -1,0 +1,26 @@
+{
+    "ROOT_URL": "xxx",
+    "APP_PORT": 8001,
+    "APP_HOST": "0.0.0.0",
+    "SESSION_KEY": "xxx",
+    "SESSION_SECRET": "xxx",
+    "SINGLE_SERVER_IP": "xxx (this is optional, if present it only uses this IP address while publishing)",
+    "MANAGED_MODE": false,
+    "db" : {
+        "DB_HOST": "xxx",
+        "DB_NAME": "soxnet",
+        "DB_USER": "xxx",
+        "DB_PASSWORD": "xxx",
+        "MAX_DB_CONNECTIONS": 50
+    },
+    "redis" : {
+        "REDIS_HOST": "xxx",
+        "REDIS_PORT": 6379,
+        "REDIS_PASSWORD": "xxx",
+        "REDIS_SESSIION_PREFIX": "sxnt_sess:",
+        "MAX_REDIS_CONNECTIONS": 50
+    },
+    "MAILGUN_API_KEY": "xxx",
+    "MAILGUN_DOMAIN": "xxxx",
+    "EMAIL_FROM_ADDRESS": "xxxx"
+}

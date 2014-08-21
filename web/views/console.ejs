@@ -1,0 +1,160 @@
+<%- include header.ejs %>
+<link href="js/thirdparty/select2/select2.css" rel="stylesheet"/>
+<link href="css/jquery.dataTables.min.css" rel="stylesheet"/>
+<link href="js/thirdparty/select2/select2-bootstrap.css" rel="stylesheet"/>
+<link href="css/bootstrap-tour.min.css" rel="stylesheet"/>
+<script src="js/thirdparty/jquery.dataTables.min.js"></script>
+<script src="js/thirdparty/moment.min.js"></script>
+<script src="js/thirdparty/select2/select2.js"></script>
+<script src="js/thirdparty/bootstrap-tour.min.js"></script>
+<script src="js/shelloid/serv.min.js"></script>
+<script src="js/shelloid/controllers/device_shares.js"></script>
+<script src="js/shelloid/controllers/devices.js"></script>
+<script src="js/shelloid/controllers/profiles.js"></script>
+<script src="js/shelloid/controllers/port_mappings.js"></script>
+<script src="js/shelloid/controllers/invite.js"></script>
+<script src="js/shelloid/views.js"></script>
+<style>
+    .tour-tour {
+        min-width: 250px;
+    }
+</style>
+<div style="visibility:hidden; display: none">
+    <div id="tour_intro">
+        Shelloid VPT enables you to securely share service ports in your device with others across the Internet.
+        Shelloid VPT essentially works by <i>secure cloud-based port forwarding</i>.
+    </div>
+    <div id="tour_add_device">
+        In order to share your service ports or let others share their ports with you, you must first add your device to
+        our
+        cloud.
+    </div>
+    <div id="tour_share_device">
+        If you want to allow other users to open their service ports to your device, you must share your device with
+        them.
+        Similarly you will be able to open your devices' service ports to those devices shared with you.
+    </div>
+    <div id="tour_open_port">
+        You may allow other users to remotely access network-enabled services (e.g., web server, database server) running in your devices by
+        opening your devices' service ports to other users' devices.
+    </div>
+</div>
+<script>
+    var webAppVersion = '<%- include version.txt %>';
+    $(function () {
+        if (isLoggedIn(true)) {
+            support_init(getUser().email);
+            addWaitingOverlay();
+            addView('port_mappings');
+            addView('device_shares');
+            addView('devices');
+            addView('profiles');
+            addView('invite');
+            removeWaitingOverlay();
+            /*
+             setupTour is called from port_mappings tab
+            setupTour();
+            */
+        }
+        else {
+            window.location = window.actualSite + "/?msgId=1";
+        }
+    });
+    window.setInterval(function () {
+        doPost("/getVersion", {}, function (resp) {
+            if (resp.version > webAppVersion) {
+                showToast("A new version of our web application is available. Please reload the page to get the latest version (" + resp.version + ").", "danger", true);
+                webAppVersion = resp.version;
+            }
+        });
+    }, 5 * 60 * 1000);
+
+    function setupTour() {
+        var tour = new Tour({
+            steps: [
+                {
+                    element: "#brandLogoImg",
+                    title: "Welcome to Shelloid Virtual Private Transport (VPT)!",
+                    placement: "bottom",
+                    content: $("#tour_intro").html()
+                },
+                {
+                    element: "#addNodePanelBtn",
+                    title: "Title of my step",
+                    placement: "top",
+                    content: $("#tour_add_device").html(),
+                    onShow: function (tour) {
+                        $("#devicesTabLink").click();
+                    }
+                },
+                {
+                    element: "#shareThisNodeBtn",
+                    title: "Title of my step",
+                    placement: "top",
+                    content: $("#tour_share_device").html(),
+                    onShow: function (tour) {
+                        $("#deviceSharesTabLink").click();
+                    }
+                },
+                {
+                    element: "#addPortMappingPanelBtn",
+                    title: "Title of my step",
+                    placement: "top",
+                    content: $("#tour_open_port").html(),
+                    onShow: function (tour) {
+                        $("#portMappingsTabLink").click();
+                    }
+                }
+            ]
+        });
+        tour.init();
+        tour.start();
+        $("#start_tour").click(function () {
+            tour.restart();
+        });
+    }
+</script>
+<section id="recent-works">
+    <div class="container">
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="active"><a href="#devices" data-toggle="tab" id="devicesTabLink">Devices</a></li>
+            <li><a id="deviceSharesTabLink" href="#deviceShares" data-toggle="tab">Device Sharing</a></li>
+            <li><a id="portMappingsTabLink" href="#portMappings" data-toggle="tab">Port Mappings</a></li>
+            <li><a href="#profiles" data-toggle="tab">My Profile</a></li>
+            <%if (managed == false) { %>
+            <li><a href="#invite" data-toggle="tab">Invite Friends</a></li>
+            <%}%>
+        </ul>
+        <div class="tab-content" style="padding-bottom: 30px; min-height: 300px">
+            <div class="tab-pane active" id="devices">
+                <div class="container" id="devices_tab">
+                </div>
+            </div>
+            <div class="tab-pane" id="deviceShares">
+                <div class="container" id="deviceShares_tab">
+                </div>
+            </div>
+            <div class="tab-pane" id="portMappings">
+                <div class="container" id="portMappings_tab">
+                </div>
+            </div>
+            <div class="tab-pane" id="profiles">
+                <div class="container" id="profiles_tab">
+                </div>
+            </div>
+            <%if (managed == false) { %>
+            <div class="tab-pane" id="invite">
+                <div class="container" id="invites_tab">
+                </div>
+            </div>
+            <%}%>
+        </div>
+        <div align="left">
+            <br/>
+            <button id="start_tour" class="btn btn-default tourBtn">
+                <span class="glyphicon glyphicon-hand-right"></span> Tour
+            </button>
+        </div>
+    </div>
+</section>
+<%- include footer.ejs %>

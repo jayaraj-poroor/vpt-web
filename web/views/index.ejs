@@ -1,0 +1,387 @@
+<%- include header.ejs %>
+
+<script>
+
+    support_init((getUser() != undefined ? getUser().email : ""));
+    function bb_alert(title, msg, callback) {
+        bootbox.dialog({
+            message: msg,
+            title: title,
+            buttons: {
+                success: {
+                    label: "OK",
+                    className: "btn-success",
+                    callback: function () {
+                        if (callback != undefined) {
+                            callback();
+                        }
+                    }
+                }
+            }
+        });
+    }
+    function validateEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+    function submitUserInfo(event) {
+        event.preventDefault();
+        var name = $('#username').val();
+        var email = $('#email').val();
+        var invitationCode = $("#invitationCode").val();
+        var subscribeToMailChimp = $('#subscribeToMailChimp').prop('checked');
+        if (name == "" && email == "" && invitationCode == "") {
+            bootbox.alert("Please enter valid data and try signing up again.");
+            return;
+        }
+        if (validateEmail(email)) {
+            var data = {name: name, email: email, invitationCode: invitationCode, subscribeToMailChimp: subscribeToMailChimp};
+            addWaitingOverlay();
+            doPost("/expressInterest", data, function (resp) {
+                removeWaitingOverlay();
+                if (resp.status == 201){
+                    bb_alert("Success", "Please check your email for getting instructions to complete the registration. \nHow ever the mailchimp subscription is failed.", function () {
+                        $("#username").val("");
+                        $("#email").val("");
+                    });
+                }
+                else if (resp.status == 200) {
+                    bb_alert("Success", "Please check your email for getting instructions to complete the registration.", function () {
+                        $("#username").val("");
+                        $("#email").val("");
+                    });
+                }
+                else {
+                    bb_alert("Error", "An error has been occurred. Please try again. " + ((typeof resp.msg == "string") ? "(" + resp.msg + ")" : "" ));
+                    console.log(resp);
+                }
+            }, function (err) {
+                removeWaitingOverlay();
+                bootbox.alert("Server Error: " + err.error);
+            });
+        }
+        else {
+            bb_alert("Error", "Invalid Email address: " + email);
+        }
+        event.preventDefault();
+    }
+
+    $(function () {
+        $("#interest").click(submitUserInfo);
+        $('#benefitslink').click(function () {
+            $('#benefits').modal('show');
+        });
+        $("#invitationCode").tooltip({
+            'delay': {hide: 5000 }
+        });
+        $("#interest").tooltip();
+    });
+
+</script>
+<style>
+    .invitation_tooltip a {color: blue; text-decoration: underline;}
+    .invitation_tooltip .tooltip  {background-color:white; color:black;text-align:left; font-weight:bold}
+    .invitation_tooltip .tooltip-inner {background-color:white; color:black;text-align:left; font-weight:bold}
+    .invitation_tooltip .tooltip-arrow {border-top-color: white;}
+</style>
+<section id="main-slider" class="no-margin">
+    <div class="carousel slide wet-asphalt">
+        <ol class="carousel-indicators">
+            <li data-target="#main-slider" data-slide-to="0" class="active"></li>
+
+        </ol>
+        <div class="carousel-inner">
+            <div class="item active" style="background-image: url(images/slider/bg-cloud.jpg)">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="carousel-content center centered">
+                                <h2 class="animation animated-item-1"><b>
+                                        Easily and securely open your service ports to other devices across the Internet.</b>
+                                </h2>
+                                <br>
+								    <span class='animation animated-item-1 benefits-caption'>
+                                        <b>
+                                            <font size='+1'>
+                                                Shelloid Virtual Private Transport (VPT) enables granting access to network-enabled services without yielding network-level access like VPNs.
+                                            </font>
+                                        </b>
+                                    </span>
+                                <p>
+                                <div>
+                                    <div class="col-sm-12">
+                                        <h1></h1>
+
+                                        <form class="form-inline" role="form">
+                                            <%if (managed == false) { %>
+                                            <div class="form-group">
+                                                <input type="name" class="form-control" id='username' size="30"
+                                                       placeholder="Enter your name"></div>
+                                            <div class="form-group"><input type="email" size="30" class="form-control"
+                                                                           id='email'
+                                                                           placeholder="Enter your email address">
+                                            </div>
+                                            <div class="form-group" id="invitation-code-form" class="invitation_tooltip" style="display: none">
+                                                <input type="text" size="30" value="BETA_1" class="form-control" id='invitationCode' placeholder="Enter your invitation code"  data-toggle="tooltip" data-placement="top" data-html="true" title="Don't have an invitation code? <a href='#' class ='subscribe_link' onclick='mc.openPopup();'>Subscribe to our Newsletter to get updates.</a>">
+                                            </div>
+                                            <button id='interest' type="input" class="btn btn-warning btn-lg invitation_tooltip"  data-toggle="tooltip" data-placement="top" data-html="true" title="Invitation codes are no longer required">Sign up
+                                            </button>
+                                            <% } %>
+                                            <!--
+											<button type="input" class="fund_link btn btn-warning btn-lg" data-toggle="tooltip" data-placement="top" data-html="true">
+									  Fund us on Indiegogo »</button> -->
+                                        </form>
+
+                                        <%if (managed == false) { %>
+                                            <input type = "checkbox" checked id="subscribeToMailChimp"/>
+                                        <label for ="subscribeToMailChimp">Subscribe to our Newsletter</label>
+                                        <% } %>
+                                        <br/><br/>
+                                        <p><b>Want to install VPT in your own servers/private cloud? Contact us at contact [AT] shelloid [DOT] com.</b></p>
+                                    </div>
+                                    <!--
+                                    <span class='animation animated-item-1 benefits-caption'><b><font size='+1'>
+                                                We will be launching soon. Pre-register by signing up now. <br/>You will
+                                                get 1 free credit if you purchase at least 1 credit within a month from
+                                                launching!
+                                            </font></b></span>
+                                            -->
+                                    <!-- /col-lg-6 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/.item-->
+            </div>
+        </div>
+    </div>
+</section>
+<!--/#main-slider-->
+
+
+<!-- > End slider <!-->
+
+
+<!-- > Starting Featured service 1 <!-->
+<section id="recent-works">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <h3>Shelloid Virtual Private Transport (VPT)</h3>
+                <p> The VPT project's vision is to make remote access to network-enabled services simpler and safer for end-users.
+                </p><p> Unlike VPNs, VPT does not provide network-level access between participating devices.  As a result VPT users are not vulnerable to firewall misconfigurations and do not have to deal with complex firewall rules for security. Moreover, any potential compromises in a participating system has much lesser impact on other systems since the network perimeter is not extended to include all the participating devices.
+                </p><p>Applications of VPT include, but not limited to, developer collaboration, remote administration, remote license server access, secure remote data acquisition, and secure IoT data transport.</p>
+                <div class="btn-group">
+                    <a class="btn btn-danger" href="#scroller" data-slide="prev"><i class="icon-angle-left"></i></a>
+                    <a class="btn btn-danger" href="#scroller" data-slide="next"><i class="icon-angle-right"></i></a>
+                </div>
+                <p class="gap"></p>
+            </div>
+            <div class="col-md-9">
+                <div id="scroller" class="carousel slide">
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <div class="portfolio-item">
+                                        <div class="item-inner">
+                                            <img class="img-responsive" src="images/portfolio/recent/programming.jpg" alt="">
+                                            <h5>
+                                                Collaborative Development</h5>
+                                            <div class="overlay">
+                                                <a class="preview btn btn-danger" title="View image" href="images/portfolio/full/programming.jpg" rel="prettyPhoto"><i class="icon-eye-open"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="portfolio-item">
+                                        <div class="item-inner">
+                                            <img class="img-responsive" src="images/portfolio/recent/security.jpg" alt="">
+                                            <h5>
+                                                Advanced Security
+                                            </h5>
+                                            <div class="overlay">
+                                                <a class="preview btn btn-danger" title="View image" href="images/portfolio/full/security.jpg" rel="prettyPhoto"><i class="icon-eye-open"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="portfolio-item">
+                                        <div class="item-inner">
+                                            <img class="img-responsive" src="images/portfolio/recent/realtime-messaging.jpg" alt="">
+                                            <h5>
+                                                Global Access
+                                            </h5>
+                                            <div class="overlay">
+                                                <a class="preview btn btn-danger" title="View image" href="images/portfolio/full/realtime-messaging.jpg" rel="prettyPhoto"><i class="icon-eye-open"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div><!--/.row-->
+                        </div><!--/.item-->
+
+
+                        <div class="item">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <div class="portfolio-item">
+                                        <div class="item-inner">
+                                            <img class="img-responsive" src="images/portfolio/recent/mobility.jpg" alt="">
+                                            <h5>
+                                                Bring Your Own Device
+                                            </h5>
+                                            <div class="overlay">
+                                                <a class="preview btn btn-danger" title="View image" href="images/portfolio/recent/mobility.jpg" rel="prettyPhoto"><i class="icon-eye-open"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="portfolio-item">
+                                        <div class="item-inner">
+                                            <img class="img-responsive" src="images/portfolio/full/cloudcomputing.jpg" alt="">
+                                            <h5>
+                                                Service &amp; Resource Sharing
+                                            </h5>
+                                            <div class="overlay">
+                                                <a class="preview btn btn-danger" title="View image" href="images/portfolio/full/cloudcomputing.jpg" rel="prettyPhoto"><i class="icon-eye-open"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-4">
+                                    <div class="portfolio-item">
+                                        <div class="item-inner">
+                                            <img class="img-responsive" src="images/portfolio/recent/databases.jpg" alt="">
+                                            <h5>
+                                                Data Sharing
+                                            </h5>
+                                            <div class="overlay">
+                                                <a class="preview btn btn-danger" title="View image" href="images/portfolio/full/databases.jpg" rel="prettyPhoto"><i class="icon-eye-open"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--/.row-->
+                        </div><!--/.item-->
+
+                        <div class="item">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <div class="portfolio-item">
+                                        <div class="item-inner">
+                                            <img class="img-responsive" src="images/portfolio/recent/embedded.jpg" alt="">
+                                            <h5>
+                                                Embedded Deployments
+                                            </h5>
+                                            <div class="overlay">
+                                                <a class="preview btn btn-danger" title="View image" href="images/portfolio/full/embedded.jpg" rel="prettyPhoto"><i class="icon-eye-open"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="portfolio-item">
+                                        <div class="item-inner">
+                                            <img class="img-responsive" src="images/portfolio/recent/www.jpg" alt="">
+                                            <h5>
+                                                Easy Web-based Interface
+                                            </h5>
+                                            <div class="overlay">
+                                                <a class="preview btn btn-danger" title="View image" href="images/portfolio/full/www.jpg" rel="prettyPhoto"><i class="icon-eye-open"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="portfolio-item">
+                                        <div class="item-inner">
+                                            <img class="img-responsive" src="images/portfolio/recent/dataacquisition.jpg" alt="">
+                                            <h5>
+                                                Remote Data Acquisition
+                                            </h5>
+                                            <div class="overlay">
+                                                <a class="preview btn btn-danger" title="View image" href="images/portfolio/full/dataacquisition.jpg" rel="prettyPhoto"><i class="icon-eye-open"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--/.row-->
+                        </div><!--/.item-->
+
+                    </div>
+                </div>
+            </div>
+        </div><!--/.row-->
+    </div>
+</section>
+<div id='benefits' aria-hidden='true' aria-labelledby='benefitsLabel' role='dialog' tabindex='-1' class='modal fade'>
+    <div class='modal-dialog benefits-dialog'>
+        <div class='modal-content benefits-dialog-content'>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="benefitsLabel">We give you Power &amp; Simplicity</h4>
+            </div>
+            <div class='modal-body'>
+                Your shelloid streaming queries can contain embedded actions (e.g., send an SMS/email, tweet on your
+                behalf, post to a URL, raise an alarm, or drive an actuator) and are edge-computed by our platform,
+                i.e., are computed at Internet-connected devices (e.g,. smartphones) that are physically close to the
+                sensors. This enables:
+                <ul>
+                    <li> Smart disconnected operation - urgent responses can be made to sensor events even when there is
+                        disruption in Internet connectivity. Application-specific priorities can be attached to what
+                        data to keep and what to discard to minimize information loss in the case of longer disconnects
+                        resulting in transmit buffer overflows.
+                    </li>
+                    <li>Bandwidth optimization - Queries filter relevant information in an application-specific manner
+                        and transmit only the relevant information to our back-end cloud.
+                    </li>
+                    <li>Better real-time response - Quick local real-time responses can be made to sensor events without
+                        requiring Internet/back-end cloud always to be in the event-response loop.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $(window).resize(function(){
+            placeVideo();
+        });
+        placeVideo();
+        // hide it before it's positioned
+        //$('#video').css('display','inline');
+        $("#wb_video").tooltip();
+		$(".fund_link").click(function(e){
+			e.preventDefault();
+            alert("Our Indiegogo Campaign will be launching soon!");
+        });
+    });
+
+    function placeVideo() {
+        var windHeight = $(window).height();
+        var windWidth = $(window).width();
+        var videoHeight = $('#wb_video').height();
+        var videoWidth = $("#wb_video").width();
+        var vOffset = parseInt(windHeight) - parseInt(videoHeight);
+        var hOffset = parseInt(windWidth) - parseInt(videoWidth);
+        $('#wb_video').css('top',vOffset);
+        $('#wb_video').css('left',hOffset);
+        $("#wb_video").show();
+    }
+
+</script>
+
+
+<div id="wb_video" style="position:absolute;display:none;left:0;top:0;z-index:900" data-toggle="tooltip" data-placement="top" data-html="true" title="Watch our 1-minute video.">
+    <iframe width="200" height="140" src="//www.youtube.com/embed/2npLSYay63c?rel=0"
+            frameborder="0" allowfullscreen></iframe>
+</div>
+<%- include footer.ejs %>

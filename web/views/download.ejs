@@ -1,0 +1,23 @@
+<%- include header.ejs %>
+<script>
+
+    support_init((getUser() != undefined ? getUser().email : ""));
+</script>
+<section id="recent-works">
+    <div class="container">
+        <section id="contact-page" class="container">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h2>Download Shelloid VPT Agent</h2>
+                    <h5>You can download the Shelloid Agent by clicking on the link below.</h5>
+                    <a href="https://s3-us-west-2.amazonaws.com/shelloid-vpt/shelloid-vpt-agent.zip"
+                       class="btn btn-lg btn-primary">Download Shelloid VPT Agent</a>
+<br/><br/>
+                    Please go to our <a href="http://doc.shelloid.com/doku.php?id=agent_installation" style="text-decoration: underline">agent installation documentation page</a> for instructions on agent installation and setup.
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+<%- include footer.ejs %>

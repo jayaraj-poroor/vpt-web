@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        var bt = document.createElement("base");
+        if(location.hostname.indexOf("shelloid.com") >= 0)
+        {
+            bt.setAttribute("href", "//s3-us-west-2.amazonaws.com/shelloid-web/public/");
+            //bt.setAttribute("href", "/");
+        }
+        else
+        {
+            bt.setAttribute("href", "/");
+        }
+        document.getElementsByTagName("head")[0].appendChild(bt);
+        var protocol = location.protocol;
+        if(!protocol || protocol == ""){
+            protocol = "http:";
+        }
+        var portStr = location.port;
+        if(!portStr || portStr == 0){
+            portStr = "";
+        }else
+        {
+            portStr = ":" + portStr;
+        }
+
+        window.actualSite = protocol + "//" + location.hostname + portStr;
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title><%= title %></title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/prettyPhoto.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="js/thirdparty/toast/jquery.toast.css" rel="stylesheet">
+    <link href="css/shelloid.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="js/thirdparty/html5shiv.js"></script>
+    <script src="js/thirdparty/respond.min.js"></script>
+    <![endif]-->
+    <!--/#footer-->
+    <script type="text/javascript" src="js/thirdparty/freshwidget.js"></script>
+    <script>
+        function support_init(email){
+            FreshWidget.init("", {"queryString": "&widgetType=popup&helpdesk_ticket[requester]=" + encodeURIComponent(email), "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "#ffffdc", "buttonBg": "#006063", "alignment": "4", "offset": "235px", "formHeight": "500px", "url": "https://shelloid.freshdesk.com"} );
+        }
+    </script>
+    <script src="js/thirdparty/jquery.js"></script>
+    <script src="js/thirdparty/jquery.cookie.js"></script>
+    <script src="js/thirdparty/bootstrap.min.js"></script>
+    <script src="js/thirdparty/bootbox.js"></script>
+    <script src="js/thirdparty/jquery.prettyPhoto.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/thirdparty/toast/jquery.toast.js"></script>
+    <script src="js/thirdparty/validate/jquery.validate.js"></script>
+    <script src="js/thirdparty/md5.js"></script>
+    <script src="js/thirdparty/isotope.pkgd.min.js"></script>
+
+    <script src="js/shelloid/shelloidpoller.js"></script>
+    <script src="js/shelloid/shelloid.js"></script>
+    <script src="js/shelloid/consts.js"></script>
+    <script src="js/shelloid/lib.js"></script>
+
+    <link href="//cdn-images.mailchimp.com/embedcode/classic-081711.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        #mc_embed_signup{position:absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,.8);display:none;z-index:10000; }
+        #mc_embed_signup form{position:fixed; top:10%; left:50%; width:50%; margin-left:-25%; font:normal 100% Helvetica,Arial,sans-serif; font-size:14px; border-radius:4px; border:none; padding:10px 20px; background-color:#fff; color:#000; text-align:left;max-height:400px;overflow-y:auto;overflow-x:hidden;}
+        #mc_embed_signup a.mc_embed_close{background:transparent url(http://downloads.mailchimp.com/img/closebox.png) no-repeat; display:block; height:30px; width:30px; text-indent:-999em; position:absolute; top:-10px; right:-10px; display:none; }
+        /* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+          We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+    </style>
+
+    <link rel="shortcut icon" href="images/ico/favicon.ico">
+    <style>
+        .bootbox-alert
+        {
+            overflow-y: hidden;
+        }
+        .error {
+            color: #ff0000;
+            font-weight: normal;
+        }
+
+        .benefits-dialog {
+            color: black;
+            font-weight: normal;
+            text-align: left;
+        }
+
+        .benefits-caption {
+            color: white
+        }
+
+        #benefitslink {
+            color: white
+        }
+
+        #benefitslink:hover {
+            text-decoration: underline
+        }
+
+        .benefits-dialog-content {
+            background-color: #D9E3F2
+        }
+
+        .smGlobalBtn {
+            /* global button class */
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            box-shadow: 0 2px 2px #999;
+            padding: 0px;
+            text-decoration: none;
+            text-align: center;
+            color: #fff;
+            font-size: 25px;
+            font-weight: normal;
+            line-height: 2em;
+            border-radius: 25px;
+            -moz-border-radius: 25px;
+            -webkit-border-radius: 25px;
+        }
+
+        /* facebook button class*/
+        .facebookBtn {
+            background: #4060A5;
+        }
+
+        .facebookBtn:before {
+            /* use :before to add the relevant icons */
+            font-family: "FontAwesome";
+            content: "\f09a"; /* add facebook icon */
+        }
+
+        .facebookBtn:hover {
+            color: #4060A5;
+            background: #fff;
+        }
+
+        /* twitter button class*/
+        .twitterBtn {
+            background: #00ABE3;
+        }
+
+        .twitterBtn:before {
+            font-family: "FontAwesome";
+            content: "\f099"; /* add twitter icon */
+        }
+
+        .twitterBtn:hover {
+            color: #00ABE3;
+            background: #fff;
+        }
+
+        /* google plus button class*/
+        .googleplusBtn {
+            background: #e64522;
+        }
+
+        .googleplusBtn:before {
+            font-family: "FontAwesome";
+            content: "\f0d5"; /* add googleplus icon */
+        }
+
+        .googleplusBtn:hover {
+            color: #e64522;
+            background: #fff;
+        }
+
+        /* linkedin button class*/
+        .linkedinBtn {
+            background: #0094BC;
+        }
+
+        .linkedinBtn:before {
+            font-family: "FontAwesome";
+            content: "\f0e1"; /* add linkedin icon */
+        }
+
+        .linkedinBtn:hover {
+            color: #0094BC;
+            background: #fff;
+        }
+
+        /* pinterest button class*/
+        .pinterestBtn {
+            background: #cb2027;
+        }
+
+        .pinterestBtn:before {
+            font-family: "FontAwesome";
+            content: "\f0d2"; /* add pinterest icon */
+        }
+
+        .pinterestBtn:hover {
+            color: #cb2027;
+            background: #fff;
+        }
+
+        /* tumblr button class*/
+        .tumblrBtn {
+            background: #3a5876;
+        }
+
+        .tumblrBtn:before {
+            font-family: "FontAwesome";
+            content: "\f173"; /* add tumblr icon */
+        }
+
+        .tumblrBtn:hover {
+            color: #3a5876;
+            background: #fff;
+        }
+
+        /* rss button class*/
+        .rssBtn {
+            background: #e88845;
+        }
+
+        .rssBtn:before {
+            font-family: "FontAwesome";
+            content: "\f09e"; /* add rss icon */
+        }
+
+        .rssBtn:hover {
+            color: #e88845;
+            background: #fff;
+        }
+    </style>
+    <script>
+        $(function () {
+            $("#navLogin").click(function (){
+                $("#emailid").focus();
+            });
+            var msgid = getURLParameterByName("msgId");
+            if (msgid != null)
+            {
+                if (msgid == "1")
+                {
+                    $.removeCookie(consts.SESSION_STORE_NAME);
+                    bootbox.alert("You have to login before using this feature", function (){
+                        $("#menuLogin").find(".dropdown-toggle").click();
+                    });
+                }
+            }
+            if (isLoggedIn())
+            {
+                $("#menuLogin").hide();
+                $("#console").show();
+                $("#logout").show();
+                $("#feedback").show();
+            }
+            else
+            {
+                $("#menuLogin").show();
+                $("#console").hide();
+                $("#logout").hide();
+                $("#feedback").hide();
+            }
+            var page_id = location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
+            if (page_id == "")
+            {
+                page_id = "index";
+            }
+            $("#"+page_id).addClass("active");
+            $("#signin").click(function (event){
+                event.preventDefault();
+                if ($("#formLogin").valid())
+                {
+                    signin($("#emailid").val(), $("#password").val());
+                }
+                else
+                {
+                    bootbox.alert('Please fix input errors and try again.');
+                }
+            });
+            $("#password").keypress(function (event) {
+                if (event.which == 13)
+                {
+                    event.preventDefault();
+                    $("#signin").click();
+                }
+            });
+            $("#formLogin").validate();
+            $("#sendFeedBack").click(function (event) {
+                var title = $("#feedbackTitle").val();
+                var desc = $("#feedbackText").val();
+                if (isEmptyString(title) || isEmptyString(desc))
+                {
+                    showToast("Please enter the subject and feedback.");
+                }
+                else
+                {
+                    $('#myModal').modal('hide');
+                    addWaitingOverlay();
+                    doPost("/sendFeedBack", {title: title, feedback: desc}, function (resp) {
+                        removeWaitingOverlay();
+                        if (resp.status == 200) {
+                            showToast("Thank you for your feedback.", "success");
+                            $("#feedbackTitle").val("");
+                            $("#feedbackText").val("");
+                        }
+                        else
+                        {
+                            console.log(resp);
+                            bootbox.alert("Error: Cant send feedback. " + (typeof resp.msg == "string"? resp.msg : "Please try again later."));
+                        }
+                    }, function (err) {
+                        removeWaitingOverlay();
+                        console.log(err);
+                        bootbox.alert("Error: Cant send feedback. Please try again later.");
+                    });
+                }
+                event.preventDefault();
+            });
+        });
+    </script>
+</head>
+<body>
+<!-- Begin MailChimp Signup Form -->
+<link href="//cdn-images.mailchimp.com/embedcode/classic-081711.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+    #mc_embed_signup{position:absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,.8);display:none;z-index:10000; }
+    #mc_embed_signup form{position:fixed; top:10%; left:50%; width:50%; margin-left:-25%; font:normal 100% Helvetica,Arial,sans-serif; font-size:14px; border-radius:4px; border:none; padding:10px 20px; background-color:#fff; color:#000; text-align:left;max-height:400px;overflow-y:auto;overflow-x:hidden;}
+    #mc_embed_signup a.mc_embed_close{background:transparent url(http://downloads.mailchimp.com/img/closebox.png) no-repeat; display:block; height:30px; width:30px; text-indent:-999em; position:absolute; top:-10px; right:-10px; display:none; }
+    /* Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+      We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+</style>
+<div id="mc_embed_signup">
+    <form action="//shelloid.us8.list-manage.com/subscribe/post?u=30a529b89f968d406ae6b367d&amp;id=f128314454" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+        <h2>Subscribe to our Newsletter</h2>
+        <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
+        <div class="mc-field-group">
+            <label for="mce-EMAIL">Email Address  <span class="asterisk">*</span>
+            </label>
+            <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+        </div>
+        <div class="mc-field-group">
+            <label for="mce-FNAME">Name  <span class="asterisk">*</span>
+            </label>
+            <input type="text" value="" name="FNAME" class="required" id="mce-FNAME">
+        </div>
+        <a id="mc_embed_close" class="mc_embed_close link">Close</a> <div id="mce-responses" class="clear">
+            <div class="response" id="mce-error-response" style="display:none"></div>
+            <div class="response" id="mce-success-response" style="display:none"></div>
+        </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+        <div style="position: absolute; left: -5000px;"><input type="text" name="b_30a529b89f968d406ae6b367d_f128314454" tabindex="-1" value=""></div>
+        <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+    </form>
+</div>
+<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
+<script type='text/javascript'>
+    (function($) {
+        window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';
+        window.mc.showPopup = false;window.mc.delayPopup = 0;if (mc.showPopup) mc.evalPopup();
+    }(jQuery));
+    var $mcj = jQuery.noConflict(true);
+</script>
+<!--End mc_embed_signup-->
+
+<script>
+    $(function(){
+        $(".subscribe_link").click(function(){
+            mc.openPopup();
+        });
+    });
+</script>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Give Feedback</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="feedbackTitle">Subject</label>
+                        <input class="form-control" id="feedbackTitle" placeholder="Enter Subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackText">Feedback</label>
+                        <textarea rows="10" class="form-control" id="feedbackText" placeholder="Enter your feedback here"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="sendFeedBack">Send</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<header class="navbar navbar-inverse navbar-fixed-top wet-asphalt" role="banner">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/" class="actualSite">
+                <img src="images/logo.png" alt="logo" style="vertical-align: text-bottom" id="brandLogoImg">
+                <span class="betaLabel">Beta</span>
+            </a>
+            <!--<a class="navbar-brand actualSite" href="/">
+               <img src="images/logo.png" alt="logo"/><br/>
+              <span class="brandText">Eliminating technology roadblocks.</span>
+            </a>-->
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li id="index"><a class="actualSite" href="/">Home</a></li>
+                <!--<li><a href="http://shelloid.org/">Community</a></li>-->
+				<li><a href="http://blog.shelloid.com/">Blog</a></li>
+                <%if (managed == false) { %>
+                    <li id="pricing"><a class="actualSite" href="/pricing">Pricing</a></li>
+                <% } %>
+                <li id="learn"><a href="http://doc.shelloid.com">Learn more</a></li>
+                <li id="download"><a class="actualSite" href="/download">Downloads</a></li>
+                <!--
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Other Platforms for Licensing<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="sensoid-pres.html">Sensoid - Shelloid IoT Platform (US Pat. Pending)</a></li>
+                    </ul>
+                </li>
+                -->
+                <!--<li><a href="#" >Support</a></li> -->
+                <!--<li><a href="#">Contact Us</a></li>-->
+                <!-- <li id="feedback" data-toggle="modal" data-target="#myModal"><a class="actualSite" href="#">Feedback</a></li> -->
+                <li class="subscribe_link link"><a>Subscribe</a></li>
+                <%
+                var style= "";
+                var style2= "display: none";
+                    if (!loggedIn) {
+                        style="display: none";
+                        style2="";
+                    }
+                %>
+                <li id="console"><a class="actualSite" href="/console" style="<%=style%>">Console</a></li>
+                <li id="logout"><a class="link" onclick="signout()" style="<%=style%>">Logout</a></li>
+                <li class="dropdown" id="menuLogin" style="<%=style2%>">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
+
+                    <div class="dropdown-menu" style="padding:17px;">
+                        <div style="width: 250px"></div>
+                        <form id="formLogin">
+                            <div class="form-group">
+                                <label>Email:</label>
+                                <input type="email" name="emailid" id="emailid" placeholder="Email" class="form-control"
+                                       required="true"/>
+                            </div>
+                            <div class="form-group">
+                                <label>Password:</label>
+                                <input type="password" name="password" id="password" placeholder="Password"
+                                       class="form-control" required="true"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="button" value="Login" class="btn btn-primary" id="signin"/>
+                            </div>
+
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>

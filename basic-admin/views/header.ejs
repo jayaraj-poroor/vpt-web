@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        var bt = document.createElement("base");
+        if(location.hostname.indexOf("shelloid.com") >= 0)
+        {
+            bt.setAttribute("href", "//s3-us-west-2.amazonaws.com/shelloid-web/public/");
+            //bt.setAttribute("href", "/");
+        }
+        else
+        {
+            bt.setAttribute("href", "/");
+        }
+        document.getElementsByTagName("head")[0].appendChild(bt);
+        var protocol = location.protocol;
+        if(!protocol || protocol == ""){
+            protocol = "http:";
+        }
+        var portStr = location.port;
+        if(!portStr || portStr == 0){
+            portStr = "";
+        }else
+        {
+            portStr = ":" + portStr;
+        }
+
+        window.actualSite = protocol + "//" + location.hostname + portStr;
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title><%= title %></title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="js/thirdparty/toast/jquery.toast.css" rel="stylesheet">
+    <link href="css/shelloid.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="js/thirdparty/html5shiv.js"></script>
+    <script src="js/thirdparty/respond.min.js"></script>
+    <![endif]-->
+    <!--/#footer-->
+    <script src="js/thirdparty/jquery.js"></script>
+    <script src="js/thirdparty/jquery.cookie.js"></script>
+    <script src="js/thirdparty/bootstrap.min.js"></script>
+    <script src="js/thirdparty/bootbox.js"></script>
+    <script src="js/thirdparty/toast/jquery.toast.js"></script>
+    <script src="js/thirdparty/validate/jquery.validate.js"></script>
+    <script src="js/thirdparty/md5.js"></script>
+    <script src="js/shelloid/shelloidpoller.js"></script>
+    <script src="js/shelloid/shelloid.js"></script>
+    <script src="js/shelloid/lib.js"></script>
+    <link rel="shortcut icon" href="images/ico/favicon.ico">
+    <style>
+        .bootbox-alert
+        {
+            overflow-y: hidden;
+        }
+        .error {
+            color: #ff0000;
+            font-weight: normal;
+        }
+    </style>
+    <script>
+
+        var consts = {
+            SESSION_STORE_NAME: "adminUser"
+        };
+        $(function () {
+            var msgid = getURLParameterByName("msgId");
+            if (msgid != null)
+            {
+                if (msgid == "1")
+                {
+                    $.removeCookie(consts.SESSION_STORE_NAME);
+                    bootbox.alert("You have to login before using this feature", function (){
+                        $("#menuLogin").find(".dropdown-toggle").click();
+                    });
+                }
+            }
+            if (isLoggedIn())
+            {
+            }
+            else
+            {
+            }
+        });
+    </script>
+</head>
