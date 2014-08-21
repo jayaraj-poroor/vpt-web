@@ -438,17 +438,9 @@
                 <!--<li><a href="#">Contact Us</a></li>-->
                 <!-- <li id="feedback" data-toggle="modal" data-target="#myModal"><a class="actualSite" href="#">Feedback</a></li> -->
                 <li class="subscribe_link link"><a>Subscribe</a></li>
-                <%
-                var style= "";
-                var style2= "display: none";
-                    if (!loggedIn) {
-                        style="display: none";
-                        style2="";
-                    }
-                %>
-                <li id="console"><a class="actualSite" href="/console" style="<%=style%>">Console</a></li>
-                <li id="logout"><a class="link" onclick="signout()" style="<%=style%>">Logout</a></li>
-                <li class="dropdown" id="menuLogin" style="<%=style2%>">
+                <li id="console"><a class="actualSite" href="/console">Console</a></li>
+                <li id="logout"><a class="link" onclick="signout()">Logout</a></li>
+                <li class="dropdown" id="menuLogin">
                     <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
 
                     <div class="dropdown-menu" style="padding:17px;">
