@@ -4,11 +4,9 @@
     "APP_HOST": "0.0.0.0",
     "SESSION_KEY": "xxx",
     "SESSION_SECRET": "xxx",
-    "SINGLE_SERVER_IP": "xxx (this is optional, if present it only uses this IP address while publishing)",
-    "MANAGED_MODE": false,
     "db" : {
         "DB_HOST": "xxx",
-        "DB_NAME": "soxnet",
+        "DB_NAME": "vpt_db",
         "DB_USER": "xxx",
         "DB_PASSWORD": "xxx",
         "MAX_DB_CONNECTIONS": 50
@@ -20,6 +18,10 @@
         "REDIS_SESSIION_PREFIX": "sxnt_sess:",
         "MAX_REDIS_CONNECTIONS": 50
     },
+	"SAAS_MODE": true,
+    "ADMIN_PASSWORD": "xxx",
+    "ADMIN_SALT": "xxx",
+    "ADDON_CONTROLLER_DIR":"xxx",
     "MAILGUN_API_KEY": "xxx",
     "MAILGUN_DOMAIN": "xxxx",
     "EMAIL_FROM_ADDRESS": "xxxx"

@@ -6,7 +6,7 @@
     "SESSION_SECRET": "xxx",
     "db" : {
         "DB_HOST": "xxx",
-        "DB_NAME": "soxnet",
+        "DB_NAME": "vpt_db",
         "DB_USER": "xxx",
         "DB_PASSWORD": "xxx",
         "MAX_DB_CONNECTIONS": 50
@@ -18,7 +18,7 @@
         "REDIS_SESSIION_PREFIX": "sxnt_sess:",
         "MAX_REDIS_CONNECTIONS": 50
     },
-	"SAAS_MODE": false
+	"SAAS_MODE": true
     "ADDON_CONTROLLER_DIR":"xxx",
     "MAILGUN_API_KEY": "xxx",
     "MAILGUN_DOMAIN": "xxxx",
