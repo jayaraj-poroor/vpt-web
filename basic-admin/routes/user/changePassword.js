@@ -19,7 +19,7 @@ exports.index = function (req, res) {
                 global.config.ADMIN_PASSWORD = req.body.newPwd;
                 global.config.ADMIN_SALT = salt;
                 var cfg = JSON.stringify(global.config);
-                fs.writeFile("../../config.json", cfg, function(err) {
+                fs.writeFile("config.json", cfg, 'utf8', function(err) {
                     if(err) {
                         console.log(err);
                         res.send({status: 500, msg: err});
