@@ -174,37 +174,26 @@ function setupHandlers(){
         $("#addUserPanelBtn").show();
         $("#addUserPanel").hide("fast");
     });
+    setupChangePwdHandler();
 }
 
-function changeAdminPassword(){
-    bootbox.dialog({
-        message: $("#changePwdDiv").html(),
-        title: "Changing Administrator Password",
-        buttons: {
-            success: {
-                label: "Cancel",
-                className: "btn-success"
-            },
-            danger: {
-                label: "Delete",
-                className: "btn-danger",
-                callback: function() {
-                    if($("#newPassword").val() == $("#confirmNewPassword").val()) {
-                        doPost("/changePassword", {current: $("#currentPassword").val() ,newPwd: $("#newPassword").val()}, function (resp) {
-                            if (resp.status == 200) {
-
-                            }
-                            else {
-                                bootbox.alert("<b>An error has occurred while changing the password.</b><br/>" + (typeof resp.msg == "string" ? resp.msg : ""));
-                            }
-                        }, function (err) {
-                            bootbox.alert("Error: " + err);
-                        });
-                    } else {
-                        bootbox.alert("The new password and confirm password doesn't match.");
-                    }
+function setupChangePwdHandler(){
+    $("#changePwd").click(function (){
+        if($("#newPassword").val() == $("#confirmNewPassword").val()) {
+            doPost("/changePassword", {current: $("#currentPassword").val() ,newPwd: $("#newPassword").val()}, function (resp) {
+                if (resp.status == 200) {
+                    showToast("Password Changed Successfully.");
+                    $('#myModal').modal('hide');
                 }
-            }
+                else {
+                    bootbox.alert("<b>An error has occurred while changing the password.</b><br/>" + (typeof resp.msg == "string" ? resp.msg : ""));
+                }
+            }, function (err) {
+                console.log(err);
+                bootbox.alert("Error: " + (typeof err == "string" ? err : "Unknown Error."));
+            });
+        } else {
+            bootbox.alert("The new password and confirm password doesn't match.");
         }
     });
 }

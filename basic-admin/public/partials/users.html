@@ -4,7 +4,7 @@
         <div class="panel-heading">
             <h3 class="panel-title">User Manager
                 <div class="btn-group pull-right">
-                    <a class="btn btn-success btn-sm" style="padding-top: 0px; padding-bottom: 0px" onclick="changeAdminPassword();">Change Password</a>
+                    <a class="btn btn-success btn-sm" style="padding-top: 0px; padding-bottom: 0px"  data-toggle="modal" data-target="#myModal">Change Password</a>
                     <a class="btn btn-danger btn-sm" style="padding-top: 0px; padding-bottom: 0px" onclick="signout();">Logout</a>
                 </div>
             </h3>
@@ -60,7 +60,14 @@
 <link href="css/jquery.dataTables.min.css" rel="stylesheet"/>
 <script src="js/thirdparty/jquery.dataTables.min.js"></script>
 
-<div style="display: none" id="changePwdDiv">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Change password</h4>
+            </div>
+            <div class="modal-body" id="changePwdDiv">
     <form>
         <div class="form-group">
             <label>Enter Current Password</label>
@@ -76,4 +83,11 @@
             <input type="password" id="confirmNewPassword" class="form-control disabled" placeholder="Password" required/>
         </div>
     </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="changePwd">Change Password</button>
+            </div>
+        </div>
+    </div>
 </div>

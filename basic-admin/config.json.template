@@ -1,6 +1,6 @@
 {
     "ROOT_URL": "xxx",
-    "APP_PORT": 8001,
+    "APP_PORT": 8002,
     "APP_HOST": "0.0.0.0",
     "SESSION_KEY": "xxx",
     "SESSION_SECRET": "xxx",
