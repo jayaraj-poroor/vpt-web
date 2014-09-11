@@ -55,7 +55,7 @@ exports.index = function (req, res) {
                         console.log("Redis acquire Error: ", err);
                     }
                     else {
-                        redis.publish("nodeStatus:"+req.body.nodeId, JSON.stringify({msg: "U", nodeId: req.body.nodeId}));
+                        redis.publish("nodeStatus:"+req.body.nodeId, getMessageAsString({type: "OTHER_MESSAGES", msg: "U", nodeId: req.body.nodeId}).toString('hex'));
                     }
                 });
             })

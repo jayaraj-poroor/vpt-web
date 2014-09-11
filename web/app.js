@@ -30,7 +30,9 @@ var express = require('express'),
     redis = require("redis"),
     winston = require('winston'),
     ejs = require('ejs'),
-    RedisStore = require('connect-redis')(express);
+    RedisStore = require('connect-redis')(express),
+    protobuf = require("node-protobuf");
+var pb = new protobuf(fs.readFileSync("message.desc"));
 
 process.on('uncaughtException', function (err) {
     var stack = err.stack;
@@ -52,6 +54,16 @@ global.redirect = function (res, url) {
 
 global.getNormalDate = function (timestamp) {
     return timestamp.getTime() - 19800000;
+};
+
+global.getMessageAsString = function (msg){
+    var buf = pb.serialize(msg, "ShelloidMessage");
+    return buf;
+};
+
+global.parseMessage = function (msg) {
+    var buf = pb.parse(new Buffer(msg, 'hex'), "ShelloidMessage");
+    return buf;
 };
 
 function readSettingsFile() {

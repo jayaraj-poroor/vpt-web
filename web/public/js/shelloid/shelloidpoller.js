@@ -39,6 +39,7 @@ function processSuccessMessage(poller, channel, message) {
     var fn = function (ch, msg){
         var subs = poller.subscriptions[ch];
         if ((subs != undefined) && (subs != null)) {
+            console.log("ShelloidPoller: ", msg);
             subs.successCallback(ch, msg);
         }
     };

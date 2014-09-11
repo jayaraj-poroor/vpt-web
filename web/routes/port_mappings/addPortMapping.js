@@ -79,7 +79,7 @@ exports.index = function (req, res) {
                             console.log("Redis acquire Error: ", err);
                         }
                         else {
-                            redis.publish("newPortMap:" + toDeviceOwner, JSON.stringify({portMapId: insertId}));
+                            redis.publish("newPortMap:" + toDeviceOwner, getMessageAsString({type:"OTHER_MESSAGES", portMapId: insertId}).toString('hex'));
                         }
                     });
                 })

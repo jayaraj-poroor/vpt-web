@@ -58,13 +58,13 @@ exports.notify_remove = function (channel, index, noRecurse) {
             fn(value);
         });
     }
-
 };
 
 function process_message(channel, message) {
     var relevantIndices = [];
     if (subscriptions[channel]) {
-        var msg = JSON.parse(message);
+        var msg = parseMessage(message);
+        //console.log("Rcv: ", msg);
         var length = subscriptions[channel].length;
         for (var i = 0; i < length; i++) {
             if (subscriptions[channel] != undefined) {

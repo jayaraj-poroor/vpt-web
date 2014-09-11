@@ -65,7 +65,7 @@ exports.index = function (req, res) {
                             console.log("Redis acquire Error: ", err);
                         }
                         else {
-                            redis.publish("newShareStatus:" + id, JSON.stringify({nodeId: req.body.nodeId}));
+                            redis.publish("newShareStatus:" + id, getMessageAsString({type: "OTHER_MESSAGES", nodeId: req.body.nodeId}).toString('hex'));
                         }
                     });
                 })

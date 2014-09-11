@@ -1,8 +1,11 @@
 /**
  * Created by Harikrishnan on 18-07-2014.
  */
+var fs = require("fs"),
+    protobuf = require("node-protobuf"),
+    deasync = require('deasync');
+var pb = new protobuf(fs.readFileSync("message.desc"));
 
-var deasync = require('deasync');
 exports.sendToDevice = function(deviceId, msg, successCallBack, errCallBack){
     acquireRedis(function (err, redis) {
         if (err) {
@@ -10,7 +13,7 @@ exports.sendToDevice = function(deviceId, msg, successCallBack, errCallBack){
             errCallBack("Server too busy");
         }
         else {
-            redis.rpush("dev" + deviceId, JSON.stringify(msg), function (err, obj) {
+            redis.rpush("dev" + deviceId, getMessageAsString(msg), function (err, obj) {
                 if (err) {
                     console.log("Redis Error: ", err);
                     errCallBack("Can't push message.");
@@ -18,7 +21,7 @@ exports.sendToDevice = function(deviceId, msg, successCallBack, errCallBack){
                 }
                 else {
                     var publishFn = function (ip){
-                        redis.publish(ip, JSON.stringify({type: "NEW_MSG", device_id: deviceId+""}), function (err, data) {
+                        redis.publish(ip, getMessageAsString({type: "NEW_MSG", device_id: deviceId+""}), function (err, data) {
                             if (err) {
                                 console.log("Redis Error: ", err);
                                 errCallBack("Can't publish the message");

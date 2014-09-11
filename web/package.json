@@ -24,6 +24,7 @@
         "mailgun-js": "*",
         "q": "*",
         "nodejs-websocket": "*",
-        "deasync": "*"
+        "deasync": "*",
+        "bindings": "*"
     }
 }
