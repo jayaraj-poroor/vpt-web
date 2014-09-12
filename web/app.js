@@ -262,11 +262,16 @@ app.use(function (req, res, next) {
     res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
     res.setHeader("Access-Control-Allow-Origin", "*");
     var proto = req.get("X-Forwarded-Proto");
-    if(proto == "http"){
-        var url = "https://" + req.host + req.path;
+    if (req.host == "doc.shelloid.com"){
+        var url = "http://doc.shelloid.com:8080" + req.path;
         res.redirect(url);
-    }else {
-        return next();
+    } else {
+        if(proto == "http"){
+            var url = "https://" + req.host + req.path;
+            res.redirect(url);
+        }else {
+                return next();
+        }
     }
 });
 app.use(app.router);
