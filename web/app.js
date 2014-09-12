@@ -23,6 +23,7 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     http = require("http"),
+    https = require("https"),
     fs = require("fs"),
     mysql = require('mysql'),
     genericPool = require('generic-pool'),
@@ -311,9 +312,19 @@ app.use(function (req, res, next) {
     res.type('txt').send('Not found');
 });
 
-var server = http.createServer(app).listen(global.config.APP_PORT, global.config.APP_HOST, function () {
+var privateKey  = fs.readFileSync(global.config.SSL_KEY, 'utf8');
+var chain = fs.readFileSync(global.config.SSL_CHAIN, 'utf8');
+
+var credentials = {key: privateKey, cert: chain};
+
+var server = https.createServer(credentials, app).listen(global.config.APP_PORT, global.config.APP_HOST, function () {
     console.log("App running on " + global.config.APP_HOST + ":" + global.config.APP_PORT + " in " + process.env.NODE_ENV + " mode.");
 });
+
+http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+}).listen(80);
 
 function gracefulExit()
 {
