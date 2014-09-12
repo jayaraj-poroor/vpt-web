@@ -25,6 +25,7 @@
         "q": "*",
         "nodejs-websocket": "*",
         "deasync": "*",
-        "bindings": "*"
+        "bindings": "*",
+        "node-protobuf": "*"
     }
 }
