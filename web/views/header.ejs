@@ -41,6 +41,7 @@
     <link href="css/main.css" rel="stylesheet">
     <link href="js/thirdparty/toast/jquery.toast.css" rel="stylesheet">
     <link href="css/shelloid.css" rel="stylesheet">
+    <link href="js/thirdparty/sticky/sticky.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="js/thirdparty/html5shiv.js"></script>
     <script src="js/thirdparty/respond.min.js"></script>
@@ -54,6 +55,7 @@
     </script>
     <script src="js/thirdparty/jquery.js"></script>
     <script src="js/thirdparty/jquery.cookie.js"></script>
+    <script src="js/thirdparty/sticky/sticky.min.js"></script>
     <script src="js/thirdparty/bootstrap.min.js"></script>
     <script src="js/thirdparty/bootbox.js"></script>
     <script src="js/thirdparty/jquery.prettyPhoto.js"></script>
@@ -322,6 +324,7 @@
                 }
                 event.preventDefault();
             });
+            $.sticky('<b>We have updated VPT to version 3.0. <br/> Please download the latest version.</b>', {classList: 'important', autoclose: 0});
         });
     </script>
 </head>
