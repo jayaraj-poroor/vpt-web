@@ -269,8 +269,8 @@ app.use(function (req, res, next) {
         if(proto == "http"){
             var url = "https://" + req.host + req.path;
             res.redirect(url);
-        }else {
-                return next();
+        } else {
+            return next();
         }
     }
 });
