@@ -263,8 +263,8 @@ app.use(function (req, res, next) {
     res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
     res.setHeader("Access-Control-Allow-Origin", "*");
     var proto = req.get("X-Forwarded-Proto");
+    var url_parts = url.parse(req.url, true);
     if (req.host == "doc.shelloid.com"){
-        var url_parts = url.parse(req.url, true);
         var url = "http://doc.shelloid.com:8080" + req.path + url_parts.query;
         res.redirect(url);
     } else {
