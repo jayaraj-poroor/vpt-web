@@ -23,6 +23,7 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     http = require("http"),
+    url  = require('url'),
     https = require("https"),
     fs = require("fs"),
     mysql = require('mysql'),
@@ -263,7 +264,8 @@ app.use(function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     var proto = req.get("X-Forwarded-Proto");
     if (req.host == "doc.shelloid.com"){
-        var url = "http://doc.shelloid.com:8080" + req.path;
+        var url_parts = url.parse(req.url, true);
+        var url = "http://doc.shelloid.com:8080" + req.path + url_parts.query;
         res.redirect(url);
     } else {
         if(proto == "http"){
