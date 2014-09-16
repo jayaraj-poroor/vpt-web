@@ -4,5 +4,6 @@ window.views = {
     device_shares: {type: "html", contentId: "deviceShares_tab", initfn: initNodeSharesTab},
     profiles: {type: "html", contentId: "profiles_tab", initfn: initProfilesTab},
     invite: {type: "html", contentId: "invites_tab", initfn: initInviteTab},
-	_default: "port_mappings"
+    policies: {type: "html", contentId: "policies_tab", initfn: initPoliciesTab},
+	_default: "devices"
 };

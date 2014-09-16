@@ -13,6 +13,7 @@
 <script src="js/shelloid/controllers/profiles.js"></script>
 <script src="js/shelloid/controllers/port_mappings.js"></script>
 <script src="js/shelloid/controllers/invite.js"></script>
+<script src="js/shelloid/controllers/policies.js"></script>
 <script src="js/shelloid/views.js"></script>
 <style>
     .tour-tour {
@@ -49,7 +50,10 @@
             addView('device_shares');
             addView('devices');
             addView('profiles');
+            <%if (managed == false) { %>
             addView('invite');
+            <%}%>
+            addView('policies');
             removeWaitingOverlay();
             /*
              setupTour is called from port_mappings tab
@@ -119,7 +123,8 @@
         <ul class="nav nav-tabs" id="myTab">
             <li class="active"><a href="#devices" data-toggle="tab" id="devicesTabLink">Devices</a></li>
             <li><a id="deviceSharesTabLink" href="#deviceShares" data-toggle="tab">Device Sharing</a></li>
-            <li><a id="portMappingsTabLink" href="#portMappings" data-toggle="tab">Port Mappings</a></li>
+            <li><a id="portMappingsTabLink" href="#portMappings" data-toggle="tab">Service Sharing</a></li>
+            <li><a id="policiesTabLink" href="#policies" data-toggle="tab">Policies</a></li>
             <li><a href="#profiles" data-toggle="tab">My Profile</a></li>
             <%if (managed == false) { %>
             <li><a href="#invite" data-toggle="tab">Invite Friends</a></li>
@@ -136,6 +141,10 @@
             </div>
             <div class="tab-pane" id="portMappings">
                 <div class="container" id="portMappings_tab">
+                </div>
+            </div>
+            <div class="tab-pane" id="policies">
+                <div class="container" id="policies_tab">
                 </div>
             </div>
             <div class="tab-pane" id="profiles">

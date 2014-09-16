@@ -174,6 +174,12 @@ var pages = require('./routes/app/pages'),
     getNewDeviceSecret = require('./routes/app/deviceSecret'),
     getDeviceInfo = require('./routes/devices/getDeviceInfo'),
     getPortMapInfo = require('./routes/port_mappings/getPortMapInfo'),
+    listPolicies = require('./routes/policies/listPolicies'),
+    getPolicyText = require('./routes/policies/getPolicyText'),
+    listApplications = require('./routes/policies/listApplications'),
+    loadPolicyApp = require('./routes/policies/loadPolicyApp'),
+    deletePolicy = require('./routes/policies/deletePolicy'),
+    addPolicy = require('./routes/policies/addPolicy'),
     getVersion = require('./routes/app/getVersion');
 
 
@@ -302,6 +308,13 @@ app.post('/getNewDeviceSecret', getNewDeviceSecret.index);
 app.post('/getDeviceInfo', getDeviceInfo.index);
 app.post('/getPortMapInfo', getPortMapInfo.index);
 app.post('/getNewDeviceKey', getNewDeviceSecret.getNewDeviceKey);
+app.post('/listPolicies', listPolicies.index);
+app.post('/getPolicyText', getPolicyText.index);
+app.post('/getPolicyText', getPolicyText.index);
+app.post('/deletePolicy', deletePolicy.index);
+app.post('/listApplications', listApplications.index);
+app.post('/loadPolicyApp', loadPolicyApp.index);
+app.post('/addPolicy', addPolicy.index);
 app.post('/getVersion', getVersion.index);
 loadAddonControllers(app);
 app.use(function (req, res, next) {
@@ -329,7 +342,7 @@ var server = https.createServer(credentials, app).listen(global.config.APP_PORT,
 http.createServer(function (req, res) {
     res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
     res.end();
-}).listen(80);
+}).listen(global.config.APP_SECONDARY_PORT);
 
 function gracefulExit()
 {

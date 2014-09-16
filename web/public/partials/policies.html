@@ -1,0 +1,48 @@
+
+<div class="col-md-12">
+    <h3>Policies
+        <button class="pull-right btn btn-primary" id="addPolicyPanelBtn">
+            <span class=" glyphicon glyphicon-phone"></span> Add new Policy
+        </button>
+    </h3>
+
+    <div class="panel panel-default" id="addPolicyPanel" style="position: relative; z-index: 1">
+        <div class="panel-heading">
+            <h3 class="panel-title">Policies</h3>
+        </div>
+        <div class="panel-body">
+            <form id="frmPolicy">
+                <input type="hidden" id="addingNewPolicy" value="true"/>
+                <input type="hidden" id="editingPolicyId" value="-1"/>
+                <div class="form-group">
+                    <label>Enter Policy Name</label>
+                    <input type="text" id="sPolicyName" class="form-control" placeholder="Policy Name" required/>
+                </div>
+                <div class='form-group'>
+                    <label>Select Application</label>
+                    <select id="sPolicyApp" class="form-control" required>
+                    </select>
+                </div>
+                <div class='form-group' id="appContent">
+
+                </div>
+                <input type="button" class="btn btn-danger" id="addPolicyCancelBtn" value="Cancel"/>
+                <input type="button" class="btn btn-primary pull-right" id="addPolicyBtn" value="Save"/>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-condensed table-responsive" id="policyListTbl" style="width: 100%">
+            <thead>
+            <th class="col-sm-2">Name</th>
+            <th class="col-sm-3">Application</th>
+            <th class="col-sm-3">Created</th>
+            <th class="col-sm-3">Last modified</th>
+            <th class="col-sm-1">Actions</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>

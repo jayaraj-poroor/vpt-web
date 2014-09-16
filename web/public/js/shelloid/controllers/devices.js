@@ -269,7 +269,15 @@ function editNode(id) {
     $("#editingNodeId").val(id);
     $("#sNodeName").val(node.eq(0).text());
     $("#sNodeSecret").val(node.eq(2).text());
-    $("#sNodeType").find(":selected").text(node.eq(4).text());
+
+
+    $('#sNodeType option').each(function() {
+        if($(this).text() == node.eq(4).text()) {
+            $("#sNodeType").val($(this).val());
+            return false;
+        }
+    });
+
     $("#sNodeKey").val(node.eq(1).text());
     $("#addingNewNode").val(false);
 }
@@ -282,7 +290,7 @@ function deleteNode(id, ownNode) {
             buttons: {
                 success: {
                     label: "Cancel",
-                    className: "btn-success",
+                    className: "btn-success"
                 },
                 danger: {
                     label: "Delete",
