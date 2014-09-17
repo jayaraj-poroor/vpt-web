@@ -10,7 +10,7 @@ You must not remove this notice, or any other, from this software.
 /**
  * Created by Harikrishnan on 6/6/14.
  */
-
+var fs = require("fs");
 exports.index = function (req, res) {
     if (req.user) {
         easydb(dbPool)
@@ -39,7 +39,7 @@ exports.index = function (req, res) {
                         disabled: row.disabled,
                         access_policy_id: row.access_policy_id,
                         access_policy_name: row.access_policy_name,
-                        access_policy_desc: getAccessPolicyDesc(row.credential_text)
+                        access_policy_desc: getAccessPolicyDesc(row.access_policy_app_name, row.credential_text)
                     });
                 }
                 res.send({list: list, status: 200});
@@ -54,6 +54,7 @@ exports.index = function (req, res) {
     }
 };
 
-function getAccessPolicyDesc(json){
-    return json;
+function getAccessPolicyDesc(name, json){
+    var policyObj = require(fs.readFileSync(global.config.APP_FILES_PATH + name + "/server.js", 'utf8'));
+    return policyObj.getCredentialsDesc(json);
 }
