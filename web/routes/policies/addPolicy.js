@@ -26,8 +26,8 @@ exports.index = function (req, res) {
                         params = [req.user.id, req.body.editingPolicyId];
                     }
                     else {
-                        query = "SELECT 1 FROM devices";
-                        params = [req.body.sNodeKey]
+                        query = "SELECT 1";
+                        params = []
                     }
                     return {
                         query: query,
@@ -56,11 +56,15 @@ exports.index = function (req, res) {
                     };
                 })
                 .success(function (rows) {
-                    res.send({status: 200, insertId: rows.insertId, timestamp: new Date().getTime()});
+                    res.send({status: 200, insertId: rows.insertId});
                 })
                 .error(function (err) {
                     console.log(err);
-                    res.send({msg: err, status: 500});
+                    if (err.code == 'ER_DUP_ENTRY'){
+                        res.send({msg: "You can't have two policies with the same name.", status: 500});
+                    } else {
+                        res.send({msg: err, status: 500});
+                    }
                 }).execute();
         }
     }

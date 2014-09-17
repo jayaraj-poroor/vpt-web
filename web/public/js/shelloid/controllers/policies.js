@@ -3,11 +3,11 @@
  */
 
 var policyDataSet = [];
-var ejsCache = {};
+var policyAppCache = {};
 
 function initPoliciesTab() {
     if (isLoggedIn()) {
-        registerForm(addNodeForm());
+        registerForm(addPoliciesForm());
         setupAddPolicyHandlers();
         refreshPoliciesList();
     }
@@ -16,7 +16,7 @@ function initPoliciesTab() {
     }
 }
 
-var addNodeForm = function () {
+var addPoliciesForm = function () {
     var form = {};
     form.name = 'frmPolicy';
     form.obj = $('#' + form.name);
@@ -45,11 +45,13 @@ var addNodeForm = function () {
                             if (data.addingNewPolicy == "true") {
                                 var dt = new Date().getTime();
                                 policyDataSet.push(getNewPolicyRow(resp.insertId, data.sPolicyName, $("#sPolicyApp :selected").text(), dt, dt));
+                                addPolicyInPortMapList(resp.insertId, data.sPolicyName);
                             }
                             else {
                                 updateDataSet(policyDataSet, "policy" + data.editingPolicyId, "1", data.sPolicyName);
                                 updateDataSet(policyDataSet, "policy" + data.editingPolicyId, "2", $("#sPolicyApp :selected").text());
                                 updateDataSet(policyDataSet, "policy" + data.editingPolicyId, "4", moment(resp.timestamp).format("D MMM YYYY, h:mm a"));
+                                addPolicyInPortMapList(data.editingPolicyId, data.sPolicyName);
                             }
                             showPolicyDataTable();
                             $("#addingNewPolicy").val("true");
@@ -85,6 +87,7 @@ function setupAddPolicyHandlers() {
     $("#addPolicyPanelBtn").click(function (e) {
         e.preventDefault();
         $("#addPolicyPanel").show("fast");
+        $("#appContent").empty();
         $("#addPolicyPanelBtn").hide();
     });
     $("#addPolicyCancelBtn").click(function (e) {
@@ -125,15 +128,7 @@ function loadAppSpecificEditor(json){
     if (selected.val() == -1) {
         $('#appContent').empty();
     } else {
-        //if (ejsCache[e.target.selectedOptions[0].text] == undefined) {
-        var app = selected.text();
-        addWaitingOverlay();
-        doPost("/loadPolicyApp", {name: app}, function (resp) {
-            removeWaitingOverlay();
-            var template = new EJS({text: resp});
-            var content = template.render();
-            $('#appContent').html(content);
-            ejsCache[app] = content;
+        var fn = function (){
             if (json != undefined) {
                 if (fillControls != undefined) {
                     fillControls(json);
@@ -141,18 +136,28 @@ function loadAppSpecificEditor(json){
                     bootbox.alert("Can't fill data. Please try again.");
                 }
             }
-        }, function (err) {
-            removeWaitingOverlay();
-            if (err.error == 404) {
-                bootbox.alert("Can't load the structure for given ");
-            } else {
-                console.log(err);
-                bootbox.alert("Server Error: " + err.error);
-            }
-        });
-        //} else {
-        //    $('#appContent').html(ejsCache[e.target.selectedOptions[0].text]);
-        //}
+        }
+        var app = selected.text();
+        if (policyAppCache[app] == undefined) {
+            addWaitingOverlay();
+            doPost("/loadPolicyApp", {name: app}, function (resp) {
+                removeWaitingOverlay();
+                $('#appContent').html(resp);
+                policyAppCache[app] = resp;
+                fn();
+            }, function (err) {
+                removeWaitingOverlay();
+                if (err.error == 404) {
+                    bootbox.alert("Can't load the structure for given ");
+                } else {
+                    console.log(err);
+                    bootbox.alert("Server Error: " + err.error);
+                }
+            });
+        } else {
+            $('#appContent').html(policyAppCache[app]);
+            fn();
+        }
     }
 }
 
@@ -164,6 +169,7 @@ function refreshPoliciesList() {
             policyDataSet = [];
             for (var i = 0; i < resp.list.length; i++) {
                 policyDataSet.push(getNewPolicyRow(resp.list[i].policy_id, resp.list[i].policy_name, resp.list[i].app_name, resp.list[i].created_at, resp.list[i].last_modified_at));
+                addPolicyInPortMapList(resp.list[i].policy_id, resp.list[i].policy_name);
             }
             showPolicyDataTable();
         }
@@ -230,7 +236,7 @@ function editPolicy(id) {
             try{
                 loadAppSpecificEditor(JSON.parse(resp.text));
             } catch (err){
-                console.log(resp.text);
+                console.log(err, resp.text);
                 bootbox.alert("Unable to parse policy text.");
             }
             $("#addingNewPolicy").val(false);

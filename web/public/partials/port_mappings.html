@@ -20,13 +20,13 @@
                     </select>
                 </div>
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <div class="form-group">
                             <label>Select Service Name/Port</label>
                             <input type="text" id="portMappingNumber" class="form-control" placeholder="Port Number/Service Name" required/>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label>Protocol</label>
                             <div class="radio">
@@ -41,6 +41,13 @@
                                     UDP
                                 </label>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="checkbox" id="usePolicyInPortMap"><label for="usePolicyInPortMap">&nbsp;&nbsp;Use Policy?</label>
+                        <div class="form-group">
+                            <select id="portmapPolicy" class="form-control" disabled>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -59,9 +66,10 @@
             <thead>
             <!--<th class="col-sm-1">#</th>-->
             <th class="col-sm-1">Host Device</th>
-            <th class="col-sm-2">Owner</th>
+            <th class="col-sm-1">Owner</th>
             <th class="col-sm-1">Service Name/Port</th>
             <th class="col-sm-1">Protocol</th>
+            <th class="col-sm-1">Policy</th>
             <th class="col-sm-1">Guest Device</th>
             <th class="col-sm-2">Owner</th>
             <th class="col-sm-1">Mapped Port</th>

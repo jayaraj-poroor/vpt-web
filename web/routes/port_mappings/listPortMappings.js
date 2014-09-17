@@ -16,7 +16,7 @@ exports.index = function (req, res) {
         easydb(dbPool)
             .query(function () {
                 return {
-                    query: "SELECT * FROM port_maps WHERE svc_dev_id IN (SELECT id FROM devices WHERE owner_id = ?) OR mapped_dev_id IN (SELECT id FROM devices WHERE owner_id = ?)",
+                    query: "SELECT id, svc_dev_id, svc_port, mapped_dev_id, mapped_port, protocol, opened_at, app_side_status, svc_side_status, disabled, last_update_ts, access_policy_id, credential_text, (SELECT policy_name FROM policies WHERE policy_id = access_policy_id) as access_policy_name FROM port_maps WHERE svc_dev_id IN (SELECT id FROM devices WHERE owner_id = ?) OR mapped_dev_id IN (SELECT id FROM devices WHERE owner_id = ?)",
                     params: [req.user.id, req.user.id, req.user.id]
                 };
             })
@@ -36,7 +36,10 @@ exports.index = function (req, res) {
                         toPort: (row.mapped_port == -1 ? "" : row.mapped_port),
                         date: getNormalDate(row.opened_at),
                         protocol: row.protocol,
-                        disabled: row.disabled
+                        disabled: row.disabled,
+                        access_policy_id: row.access_policy_id,
+                        access_policy_name: row.access_policy_name,
+                        access_policy_desc: getAccessPolicyDesc(row.credential_text)
                     });
                 }
                 res.send({list: list, status: 200});
@@ -50,3 +53,7 @@ exports.index = function (req, res) {
         res.send(403);
     }
 };
+
+function getAccessPolicyDesc(json){
+    return json;
+}

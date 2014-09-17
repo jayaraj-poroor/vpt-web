@@ -6,7 +6,8 @@
 <div class="control-group">
     <label>Database Permissions</label>
     <div class="controls span2">
-            <button id="mysqlPolicyAppAllPriv">ALL PRIVILEGES</button>
+        <button id="mysqlPolicyAppAllPriv">ALL PRIVILEGES</button>
+        <button id="mysqlPolicyAppNoPriv">NO PRIVILEGES</button>
         <label class="checkbox">
             <input type="checkbox" value="CREATE" id="mysqlPolicyAppCreate" class="privilegeOption">CREATE
         </label>
@@ -36,6 +37,11 @@
         $("#mysqlPolicyAppAllPriv").on("click", function (e){
             e.preventDefault();
             $(".privilegeOption").prop("checked", true);
+            $(".privilegeOption").trigger("change");
+        });
+        $("#mysqlPolicyAppNoPriv").on("click", function (e){
+            e.preventDefault();
+            $(".privilegeOption").prop("checked", false);
             $(".privilegeOption").trigger("change");
         });
         $(".privilegeOption").on("change", function (){

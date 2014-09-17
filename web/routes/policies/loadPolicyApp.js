@@ -15,7 +15,7 @@ var fs = require("fs");
 exports.index = function (req, res) {
     if (req.user) {
         try {
-            res.send(fs.readFileSync(global.config.APP_FILES_PATH + req.body.name + ".ejs", 'utf8'));
+            res.send(fs.readFileSync(global.config.APP_FILES_PATH + req.body.name + "/client.htm", 'utf8'));
         } catch (err){
             console.log(err);
             res.send(404);
