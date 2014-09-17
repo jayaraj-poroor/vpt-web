@@ -58,6 +58,9 @@ function processSuccessMessage(poller, channel, message) {
                 fn(channel, value);
             });
         }
+        if (max == -1){
+            max = message.lastUpdateId;
+        }
         if (max > poller.lastUpdateId){
             poller.lastUpdateId = max;
         }
@@ -65,7 +68,6 @@ function processSuccessMessage(poller, channel, message) {
     else {
         fn(channel, message);
     }
-    poller.ajaxRequest = createRequest(poller, poller.method, poller.url, {channel: poller.channels, lastUpdateId: poller.lastUpdateId});
 }
 
 function processTimeoutMessage(poller) {
@@ -117,6 +119,7 @@ function createRequest(poller, method, url, data) {
             else {
                 processSuccessMessage(poller, msg.channel, msg);
             }
+            poller.ajaxRequest = createRequest(poller, poller.method, poller.url, {channel: poller.channels, lastUpdateId: poller.lastUpdateId});
         },
         error: function (jqXHR, textStatus, errorThrown) {
             if (textStatus == "timeout") {

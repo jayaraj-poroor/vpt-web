@@ -56,7 +56,7 @@ exports.index = function (req, res) {
                     };
                 })
                 .success(function (rows) {
-                    res.send({status: 200, insertId: rows.insertId});
+                    res.send({status: 200, insertId: rows.insertId, timestamp: new Date().getTime()});
                 })
                 .error(function (err) {
                     console.log(err);
