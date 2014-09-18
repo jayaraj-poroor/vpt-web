@@ -14,8 +14,8 @@ You must not remove this notice, or any other, from this software.
 exports.index = function (req, res) {
     if (req.user) {
         var port = parseInt(req.body.portMappingNumber);
-        if (req.body.portMappingNodesFrom == undefined || req.body.portMappingNumber == undefined ||
-            req.body.portMappingNodesTo == undefined || req.body.portMappingProtocolTcp == undefined || port <= 0 || port > 65535 || (req.body.portMappingNodesFrom == req.body.portMappingNodesTo)) {
+        if (req.body.portMappingNodesFrom == undefined || req.body.portMappingNumber == undefined || req.body.usePolicyInPortMap == undefined || (req.body.usePolicyInPortMap == true && req.body.portmapPolicy == undefined) ||
+        req.body.portMappingNodesTo == undefined || req.body.portMappingProtocolTcp == undefined || port <= 0 || port > 65535 || (req.body.portMappingNodesFrom == req.body.portMappingNodesTo)) {
             res.send({msg: "Please provide valid data.", status: 500});
         }
         else {
@@ -35,9 +35,17 @@ exports.index = function (req, res) {
                     }
                 })
                 .query(function () {
+                    var sql;
+                    var params = [req.body.portMappingNodesFrom, req.body.portMappingNumber, req.body.portMappingNodesTo, req.body.portMappingProtocolTcp == true ? "TCP" : "UDP"];
+                    if (req.body.usePolicyInPortMap == true){
+                        sql = "INSERT INTO port_maps (`svc_dev_id` ,`svc_port` ,`mapped_dev_id` ,`mapped_port` ,`protocol`, `last_update_ts`, `access_policy_id`) VALUES (?, ?, ?, -1, ?, CURRENT_TIMESTAMP, ?)";
+                        params.push(req.body.portmapPolicy);
+                    } else {
+                        sql = "INSERT INTO port_maps (`svc_dev_id` ,`svc_port` ,`mapped_dev_id` ,`mapped_port` ,`protocol`, `last_update_ts`) VALUES (?, ?, ?, -1, ?, CURRENT_TIMESTAMP)";
+                    }
                     return {
-                        query: "INSERT INTO port_maps (`svc_dev_id` ,`svc_port` ,`mapped_dev_id` ,`mapped_port` ,`protocol`) VALUES (?, ?, ?, -1, ?)",
-                        params: [req.body.portMappingNodesFrom, req.body.portMappingNumber, req.body.portMappingNodesTo, req.body.portMappingProtocolTcp == true ? "TCP" : "UDP", new Date()]
+                        query: sql,
+                        params: params
                     };
                 })
                 .success(function (rows) {

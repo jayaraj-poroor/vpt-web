@@ -31,6 +31,7 @@ var express = require('express'),
     redis = require("redis"),
     winston = require('winston'),
     ejs = require('ejs'),
+    path = require('path'),
     RedisStore = require('connect-redis')(express),
     protobuf = require("node-protobuf");
 var pb = new protobuf(fs.readFileSync("message.desc"));
@@ -40,6 +41,7 @@ process.on('uncaughtException', function (err) {
     console.log("uncaughtException: " + stack);
 });
 
+global.appRoot = path.resolve(__dirname);
 global.logger = new (winston.Logger)({
     transports: [
         new (winston.transports.Console)({ level: 'debug', timestamp: true })
@@ -174,12 +176,6 @@ var pages = require('./routes/app/pages'),
     getNewDeviceSecret = require('./routes/app/deviceSecret'),
     getDeviceInfo = require('./routes/devices/getDeviceInfo'),
     getPortMapInfo = require('./routes/port_mappings/getPortMapInfo'),
-    listPolicies = require('./routes/policies/listPolicies'),
-    getPolicyText = require('./routes/policies/getPolicyText'),
-    listApplications = require('./routes/policies/listApplications'),
-    loadPolicyApp = require('./routes/policies/loadPolicyApp'),
-    deletePolicy = require('./routes/policies/deletePolicy'),
-    addPolicy = require('./routes/policies/addPolicy'),
     getVersion = require('./routes/app/getVersion');
 
 
@@ -308,15 +304,8 @@ app.post('/getNewDeviceSecret', getNewDeviceSecret.index);
 app.post('/getDeviceInfo', getDeviceInfo.index);
 app.post('/getPortMapInfo', getPortMapInfo.index);
 app.post('/getNewDeviceKey', getNewDeviceSecret.getNewDeviceKey);
-app.post('/listPolicies', listPolicies.index);
-app.post('/getPolicyText', getPolicyText.index);
-app.post('/getPolicyText', getPolicyText.index);
-app.post('/deletePolicy', deletePolicy.index);
-app.post('/listApplications', listApplications.index);
-app.post('/loadPolicyApp', loadPolicyApp.index);
-app.post('/addPolicy', addPolicy.index);
 app.post('/getVersion', getVersion.index);
-loadAddonControllers(app);
+loadAddonControllers(global.config.ADDON_CONTROLLER_DIR, app);
 app.use(function (req, res, next) {
     res.status(404);
     if (req.accepts('html')) {
@@ -373,8 +362,7 @@ function gracefulExit()
 }
 process.on('SIGTERM', gracefulExit).on('SIGINT', gracefulExit);
 
-function loadAddonControllers(app){
-    var addon_controllers = global.config.ADDON_CONTROLLER_DIR;
+function loadAddonControllers(addon_controllers, app){
     if (addon_controllers != undefined && fs.existsSync(addon_controllers)){
         console.log("Add-on controller loading from " + addon_controllers);
         var files = fs.readdirSync(addon_controllers);
@@ -383,6 +371,8 @@ function loadAddonControllers(app){
                 var name = file.replace(".js", "");
                 var mod = require(addon_controllers + "/" + name);
                 app.all("/" + name, mod.index);
+            } else if (endsWith(file, ".dir")){
+                loadAddonControllers(addon_controllers + "/" + file, app);
             }
         });
     } else {

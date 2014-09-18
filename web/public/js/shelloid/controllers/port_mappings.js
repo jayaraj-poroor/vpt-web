@@ -211,11 +211,13 @@ var addPortMappingForm = function () {
             var data = {
                 portMappingNodesFrom: undefined,
                 portMappingNumber: undefined,
+                portmapPolicy: undefined,
                 portMappingNodesTo: undefined
             };
             fillModel(form.obj, data);
             if (data.portMappingNodesFrom != data.portMappingNodesTo) {
                 var port = parseInt(data.portMappingNumber);
+                data.usePolicyInPortMap = $("#usePolicyInPortMap").is(":checked");
                 if (port > 0 && port <= 65535) {
                     data.portMappingProtocolTcp = $("#portMappingProtocolTcp").is(":checked");
                     addWaitingOverlay();

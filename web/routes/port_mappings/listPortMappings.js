@@ -16,7 +16,7 @@ exports.index = function (req, res) {
         easydb(dbPool)
             .query(function () {
                 return {
-                    query: "SELECT id, svc_dev_id, svc_port, mapped_dev_id, mapped_port, protocol, opened_at, app_side_status, svc_side_status, disabled, last_update_ts, access_policy_id, credential_text, (SELECT policy_name FROM policies WHERE policy_id = access_policy_id) as access_policy_name FROM port_maps WHERE svc_dev_id IN (SELECT id FROM devices WHERE owner_id = ?) OR mapped_dev_id IN (SELECT id FROM devices WHERE owner_id = ?)",
+                    query: "SELECT id, svc_dev_id, svc_port, mapped_dev_id, mapped_port, protocol, opened_at, app_side_status, svc_side_status, disabled, last_update_ts, access_policy_id, credential_text, (SELECT policy_name FROM policies WHERE policy_id = access_policy_id) as access_policy_name, (SELECT app_name FROM applications WHERE app_id = (SELECT application_id FROM policies WHERE policy_id = access_policy_id)) as access_policy_app_name FROM port_maps WHERE svc_dev_id IN (SELECT id FROM devices WHERE owner_id = ?) OR mapped_dev_id IN (SELECT id FROM devices WHERE owner_id = ?)",
                     params: [req.user.id, req.user.id, req.user.id]
                 };
             })
@@ -55,6 +55,10 @@ exports.index = function (req, res) {
 };
 
 function getAccessPolicyDesc(name, json){
-    var policyObj = require(fs.readFileSync(global.config.APP_FILES_PATH + name + "/server.js", 'utf8'));
-    return policyObj.getCredentialsDesc(json);
+    if (name == null){
+        return "";
+    } else {
+        var policyObj = require(global.appRoot + "/" + global.config.APP_FILES_PATH + name + "/server.js");
+        return policyObj.getCredentialsDesc(JSON.parse(json));
+    }
 }
