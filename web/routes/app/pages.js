@@ -22,5 +22,5 @@ exports.terms = function (req, res) {
 };
 
 exports.console = function (req, res) {
-    res.render('console', {"title": "Console - Shelloid VPT", managed: global.config.SAAS_MODE, loggedIn: req.user});
+    res.render('console', {"title": "Console - Shelloid VPT", managed: global.config.SAAS_MODE, loggedIn: req.user, policiesEnabled: global.modules.policiesEnabled});
 };

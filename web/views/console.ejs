@@ -42,7 +42,7 @@
 </div>
 <script>
     var webAppVersion = '<%- include version.txt %>';
-    var appInManagedMode = '<%= managed %>';
+    var appInManagedMode = <%= policiesEnabled %>;
     $(function () {
         if (isLoggedIn(true)) {
             support_init(getUser().email);
@@ -53,6 +53,8 @@
             addView('profiles');
             <%if (managed == false) { %>
             addView('invite');
+            <%}%>
+            <%if (policiesEnabled == true) { %>
             addView('policies');
             <%}%>
             removeWaitingOverlay();
@@ -124,7 +126,7 @@
             <li class="active"><a href="#devices" data-toggle="tab" id="devicesTabLink">Devices</a></li>
             <li><a id="deviceSharesTabLink" href="#deviceShares" data-toggle="tab">Device Sharing</a></li>
             <li><a id="portMappingsTabLink" href="#portMappings" data-toggle="tab">Service Sharing</a></li>
-            <%if (managed == false) { %>
+            <%if (policiesEnabled == true) { %>
             <li><a id="policiesTabLink" href="#policies" data-toggle="tab">Policies</a></li>
             <%}%>
             <li><a href="#profiles" data-toggle="tab">My Profile</a></li>
@@ -145,7 +147,7 @@
                 <div class="container" id="portMappings_tab">
                 </div>
             </div>
-            <%if (managed == false) { %>
+            <%if (policiesEnabled == true) { %>
             <div class="tab-pane" id="policies">
                 <div class="container" id="policies_tab">
                 </div>

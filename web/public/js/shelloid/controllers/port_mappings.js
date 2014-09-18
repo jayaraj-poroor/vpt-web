@@ -273,13 +273,18 @@ function setupAddPortMappingHandlers() {
         resetAddPortMappingForm();
         $("#addPortMappingPanelBtn").show();
     });
-    $("#usePolicyInPortMap").on("change", function(){
-        if ($(this).is(":checked")){
-            $("#portmapPolicy").attr("disabled", false);
-        } else {
-            $("#portmapPolicy").attr("disabled", true);
-        }
-    });
+    if (appInManagedMode == false){
+        $("#usePolicyInPortMap").attr("disabled", true);
+    } else {
+        $("#usePolicyInPortMap").attr("disabled", false);
+        $("#usePolicyInPortMap").on("change", function(){
+            if ($(this).is(":checked")){
+                $("#portmapPolicy").attr("disabled", false);
+            } else {
+                $("#portmapPolicy").attr("disabled", true);
+            }
+        });
+    }
 }
 
 function resetAddPortMappingForm() {
