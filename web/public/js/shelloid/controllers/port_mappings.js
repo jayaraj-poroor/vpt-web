@@ -273,9 +273,7 @@ function setupAddPortMappingHandlers() {
         resetAddPortMappingForm();
         $("#addPortMappingPanelBtn").show();
     });
-    if (appInManagedMode == false){
-        $("#usePolicyInPortMap").attr("disabled", true);
-    } else {
+    if (policiesEnabled == true){
         $("#usePolicyInPortMap").attr("disabled", false);
         $("#usePolicyInPortMap").on("change", function(){
             if ($(this).is(":checked")){
@@ -284,6 +282,8 @@ function setupAddPortMappingHandlers() {
                 $("#portmapPolicy").attr("disabled", true);
             }
         });
+    } else {
+        $("#usePolicyInPortMap").attr("disabled", true);
     }
 }
 

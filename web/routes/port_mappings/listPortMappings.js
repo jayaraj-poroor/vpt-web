@@ -28,7 +28,7 @@ exports.index = function (req, res) {
                     var mappedDeviceDetails = utils.getDeviceDetails(row.mapped_dev_id);
                     list.push({
                         id: row.id,
-                        fromDeviceUserName: svcDeviceDetails.userName,
+                       fromDeviceUserName: svcDeviceDetails.userName,
                         fromDeviceName: svcDeviceDetails.deviceName,
                         fromPort: row.svc_port,
                         toDeviceUserName: mappedDeviceDetails.userName,
@@ -55,7 +55,7 @@ exports.index = function (req, res) {
 };
 
 function getAccessPolicyDesc(name, json){
-    if (name == null){
+    if (name == null || json == null){
         return "";
     } else {
         var policyObj = require(global.appRoot + "/" + global.config.APP_FILES_PATH + name + "/server.js");

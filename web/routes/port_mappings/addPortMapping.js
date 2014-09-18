@@ -22,6 +22,8 @@ exports.index = function (req, res) {
             var response;
             var toDeviceOwner;
             var insertId;
+            var fromDevInfo;
+            var toDevInfo;
             easydb(dbPool)
                 .query(function () {
                     return {
@@ -49,10 +51,34 @@ exports.index = function (req, res) {
                     };
                 })
                 .success(function (rows) {
-                    var fromDevInfo = utils.getDeviceDetails(req.body.portMappingNodesFrom);
-                    var toDevInfo = utils.getDeviceDetails(req.body.portMappingNodesTo);
+                    fromDevInfo = utils.getDeviceDetails(req.body.portMappingNodesFrom);
+                    toDevInfo = utils.getDeviceDetails(req.body.portMappingNodesTo);
                     insertId = rows.insertId;
-                    utils.sendToDevice(req.body.portMappingNodesFrom, {type: "OPEN_PORT", portMapId: rows.insertId + "", svcPort: req.body.portMappingNumber}, function () {
+                })
+                .query(function () {
+                    var sql;
+                    var params = [];
+                    if (req.body.usePolicyInPortMap == true){
+                        sql = "SELECT (SELECT app_name FROM applications WHERE app_id = application_id) as appName, policy_text FROM policies WHERE policy_id = ?";
+                        params = [req.body.portmapPolicy];
+                    } else {
+                        sql = "SELECT 1"
+                    }
+                    return {
+                        query: sql,
+                        params: params
+                    };
+                })
+                .success(function (rows) {
+                    var appName = undefined;
+                    var policyText = undefined;
+                    if (req.body.usePolicyInPortMap == true){
+                        if (rows.count > 0){
+                            appName = rows[0].appName;
+                            policyText = rows[0].policy_text;
+                        }
+                    }
+                    utils.sendToDevice(req.body.portMappingNodesFrom, {type: "OPEN_PORT", portMapId: rows.insertId + "", svcPort: req.body.portMappingNumber, appName: appName, policy_text: policyText, policyId: req.body.portmapPolicy}, function () {
                         res.send({status: 200, insertId: rows.insertId, svcDevUserName: fromDevInfo.userName, mappedDevUserName: toDevInfo.userName});
                     }, function (err) {
                         res.send({msg: err, status: 201});

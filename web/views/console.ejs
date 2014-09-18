@@ -42,7 +42,7 @@
 </div>
 <script>
     var webAppVersion = '<%- include version.txt %>';
-    var appInManagedMode = <%= policiesEnabled %>;
+    var policiesEnabled = <%= policiesEnabled %>;
     $(function () {
         if (isLoggedIn(true)) {
             support_init(getUser().email);
