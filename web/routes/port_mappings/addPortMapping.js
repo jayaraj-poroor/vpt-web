@@ -73,13 +73,13 @@ exports.index = function (req, res) {
                     var appName = undefined;
                     var policyText = undefined;
                     if (req.body.usePolicyInPortMap == true){
-                        if (rows.count > 0){
+                        if (rows.length > 0){
                             appName = rows[0].appName;
                             policyText = rows[0].policy_text;
                         }
                     }
-                    utils.sendToDevice(req.body.portMappingNodesFrom, {type: "OPEN_PORT", portMapId: rows.insertId + "", svcPort: req.body.portMappingNumber, appName: appName, policy_text: policyText, policyId: req.body.portmapPolicy}, function () {
-                        res.send({status: 200, insertId: rows.insertId, svcDevUserName: fromDevInfo.userName, mappedDevUserName: toDevInfo.userName});
+                    utils.sendToDevice(req.body.portMappingNodesFrom, {type: "OPEN_PORT", portMapId: insertId + "", svcPort: req.body.portMappingNumber, appName: appName, policy_text: policyText, policyId: req.body.portmapPolicy}, function () {
+                        res.send({status: 200, insertId: insertId, svcDevUserName: fromDevInfo.userName, mappedDevUserName: toDevInfo.userName});
                     }, function (err) {
                         res.send({msg: err, status: 201});
                     });

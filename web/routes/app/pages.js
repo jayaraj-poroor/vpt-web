@@ -13,6 +13,10 @@ exports.index = function (req, res) {
     res.render('index', {"title": "Home - Shelloid VPT", managed: global.config.SAAS_MODE, loggedIn: req.user});
 };
 
+exports.dba = function (req, res) {
+    res.render('dba', {"title": "DBA Home - Shelloid VPT", managed: global.config.SAAS_MODE, loggedIn: req.user});
+};
+
 exports.download = function (req, res) {
     res.render('download', {"title": "Downloads - Shelloid VPT", managed: global.config.SAAS_MODE, loggedIn: req.user});
 };

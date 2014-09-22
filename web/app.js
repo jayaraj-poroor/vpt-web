@@ -178,7 +178,8 @@ var pages = require('./routes/app/pages'),
     getNewDeviceSecret = require('./routes/app/deviceSecret'),
     getDeviceInfo = require('./routes/devices/getDeviceInfo'),
     getPortMapInfo = require('./routes/port_mappings/getPortMapInfo'),
-    getVersion = require('./routes/app/getVersion');
+    getVersion = require('./routes/app/getVersion'),
+    expressDbaInterest = require('./routes/user/expressDbaInterest');
 
 
 var app = express();
@@ -283,8 +284,10 @@ app.get('/', pages.index);
 app.get('/download', pages.download);
 app.get('/console', pages.console);
 app.get('/terms', pages.terms);
+app.get('/dba', pages.dba);
 app.post('/signin', signin.index);
 app.post('/signout', signout.index);
+app.post('/expressDbaInterest', expressDbaInterest.index);
 app.post('/getUserInfo', getUserInfo.index);
 app.post('/getUserInfoById', getUserInfo.byId);
 app.post('/isSessionActive', isSessionActive.index);
@@ -379,6 +382,15 @@ function loadAddonControllers(addon_controllers, app){
         });
     } else {
         console.log("No add-ons loading.");
+    }
+}
+
+global.getAccessPolicyDesc = function (name, json){
+    if (name == null || json == null || json == ""){
+        return "";
+    } else {
+        var policyObj = require(global.appRoot + "/" + global.config.APP_FILES_PATH + name + "/server.js");
+        return policyObj.getCredentialsDesc(JSON.parse(json));
     }
 }
 
