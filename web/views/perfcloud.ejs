@@ -43,7 +43,7 @@
             doPost("/expressDbaInterest", data, function (resp) {
                 removeWaitingOverlay();
                 if (resp.status == 200) {
-                    bb_alert("Success", "Thank you for signing up. We have registered you for the beta. We will Email you when it is ready.", function () {
+                    bb_alert("Success", "Thank you for the PerfCloud beta sign up. We will notify you via email when the beta is ready.", function () {
                         $("#username").val("");
                         $("#email").val("");
                         $("#invitationCode").val("");

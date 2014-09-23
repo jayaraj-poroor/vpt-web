@@ -1,26 +1,34 @@
 {
+    "PUBLIC_HTML": "public",
+    "SESSION_EXPIRY": 1800,
+    "NOTIFY_TIMEOUT": 10,
+    "GENERAL_ACTION_RETRY_TIMES": 3,
     "ROOT_URL": "xxx",
     "APP_PORT": 8001,
+    "APP_SECONDARY_PORT": 81,
     "APP_HOST": "0.0.0.0",
     "SESSION_KEY": "xxx",
     "SESSION_SECRET": "xxx",
-    "db" : {
+    "SSL_KEY": "xxx/shelloid.com.pkcs8",
+    "SSL_CHAIN": "xxx/shelloid.com.server-chain",
+    "db": {
         "DB_HOST": "xxx",
-        "DB_NAME": "vpt_db",
+        "DB_NAME": "xxx",
         "DB_USER": "xxx",
         "DB_PASSWORD": "xxx",
-        "MAX_DB_CONNECTIONS": 50
+        "MAX_DB_CONNECTIONS": 10
     },
-    "redis" : {
+    "redis": {
         "REDIS_HOST": "xxx",
         "REDIS_PORT": 6379,
         "REDIS_PASSWORD": "xxx",
-        "REDIS_SESSIION_PREFIX": "sxnt_sess:",
-        "MAX_REDIS_CONNECTIONS": 50
+        "REDIS_SESSIION_PREFIX": "sxnt_admin_sess:",
+        "MAX_REDIS_CONNECTIONS": 10
     },
-	"SAAS_MODE": true
+    "APP_FILES_PATH": "xxx",
+    "SAAS_MODE": true,
     "ADDON_CONTROLLER_DIR":"xxx",
     "MAILGUN_API_KEY": "xxx",
-    "MAILGUN_DOMAIN": "xxxx",
-    "EMAIL_FROM_ADDRESS": "xxxx"
+    "MAILGUN_DOMAIN": "xxx",
+    "EMAIL_FROM_ADDRESS": "xxx"
 }
