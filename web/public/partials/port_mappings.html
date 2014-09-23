@@ -20,7 +20,13 @@
                     </select>
                 </div>
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Select Service Host</label>
+                            <input type="text" id="portMappingHostName" class="form-control" placeholder="The device in which the service is running" required value="localhost"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Select Service Name/Port</label>
                             <input type="text" id="portMappingNumber" class="form-control" placeholder="Port Number/Service Name" required/>
@@ -67,11 +73,12 @@
             <!--<th class="col-sm-1">#</th>-->
             <th class="col-sm-1">Host Device</th>
             <th class="col-sm-1">Owner</th>
-            <th class="col-sm-1">Service Name/Port</th>
+            <th class="col-sm-1">Host</th>
+            <th class="col-sm-1">Service Name / Port</th>
             <th class="col-sm-1">Protocol</th>
             <th class="col-sm-1">Policy</th>
             <th class="col-sm-1">Guest Device</th>
-            <th class="col-sm-2">Owner</th>
+            <th class="col-sm-1">Owner</th>
             <th class="col-sm-1">Mapped Port</th>
             <th class="col-sm-2">Opened at</th>
             <th class="col-sm-1">Actions</th>

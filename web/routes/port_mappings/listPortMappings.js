@@ -16,7 +16,7 @@ exports.index = function (req, res) {
         easydb(dbPool)
             .query(function () {
                 return {
-                    query: "SELECT id, svc_dev_id, svc_port, mapped_dev_id, mapped_port, protocol, opened_at, app_side_status, svc_side_status, disabled, last_update_ts, access_policy_id, credential_text, (SELECT policy_name FROM policies WHERE policy_id = access_policy_id) as access_policy_name, (SELECT app_name FROM applications WHERE app_id = (SELECT application_id FROM policies WHERE policy_id = access_policy_id)) as access_policy_app_name FROM port_maps WHERE svc_dev_id IN (SELECT id FROM devices WHERE owner_id = ?) OR mapped_dev_id IN (SELECT id FROM devices WHERE owner_id = ?)",
+                    query: "SELECT id, svc_dev_id, svc_host, svc_port, mapped_dev_id, mapped_port, protocol, opened_at, app_side_status, svc_side_status, disabled, last_update_ts, access_policy_id, credential_text, (SELECT policy_name FROM policies WHERE policy_id = access_policy_id) as access_policy_name, (SELECT app_name FROM applications WHERE app_id = (SELECT application_id FROM policies WHERE policy_id = access_policy_id)) as access_policy_app_name FROM port_maps WHERE svc_dev_id IN (SELECT id FROM devices WHERE owner_id = ?) OR mapped_dev_id IN (SELECT id FROM devices WHERE owner_id = ?)",
                     params: [req.user.id, req.user.id, req.user.id]
                 };
             })
@@ -28,6 +28,7 @@ exports.index = function (req, res) {
                     var mappedDeviceDetails = utils.getDeviceDetails(row.mapped_dev_id);
                     list.push({
                         id: row.id,
+                        svc_host: row.svc_host,
                         fromDeviceUserName: svcDeviceDetails.userName,
                         fromDeviceName: svcDeviceDetails.deviceName,
                         fromPort: row.svc_port,

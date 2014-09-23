@@ -38,18 +38,12 @@
             return;
         }
         if (validateEmail(email)) {
-            var data = {name: name, email: email, databases: otherDbs};
-            if (interestedDbs == true){
-                if (data.databases.length > 0){
-                    data.databases += ",";
-                }
-                data.databases += "MySQL";
-            }
+            var data = {name: name, email: email, databases: otherDbs, mysql_selected: interestedDbs};
             addWaitingOverlay();
             doPost("/expressDbaInterest", data, function (resp) {
                 removeWaitingOverlay();
                 if (resp.status == 200) {
-                    bb_alert("Success", "Thank you for expressing your interest.", function () {
+                    bb_alert("Success", "Thank you for signing up. We have registered you for the beta. We will Email you when it is ready.", function () {
                         $("#username").val("");
                         $("#email").val("");
                         $("#invitationCode").val("");
@@ -71,6 +65,7 @@
     }
 
     $(function () {
+        $(".sticky-close").click();
         $("#interest").click(submitUserInfo);
         $('#benefitslink').click(function () {
             $('#benefits').modal('show');
@@ -98,13 +93,13 @@
                         <div class="col-sm-12">
                             <div class="carousel-content center centered">
                                 <h2 class="animation animated-item-1"><b>
-                                        Everything you need to remotely access network-enabled services easily and securely.</b>
+                                        Get started with monitoring the performance of your business-critical databases.</b>
                                 </h2>
                                 <br>
 								    <span class='animation animated-item-1 benefits-caption'>
                                         <b>
                                             <font size='+1'>
-                                                Shelloid Virtual Private Transport (VPT) enables remote access to network-enabled services without yielding network access like VPNs or desktop access like screen sharing solutions.
+                                                Shelloid PerfCloud is a cloud service that continuously monitors the database performance and suggests actions to improve scalability and performance.
                                             </font>
                                         </b>
                                     </span>
@@ -121,12 +116,13 @@
                                                                            id='email'
                                                                            placeholder="Enter your email address">
                                             </div>
+                                            Interested In:
                                             <input type = "checkbox" checked id="mySqlInterested"/>
                                             <label for ="mySqlInterested">MySQL</label>
                                             <div class="form-group">
-                                            <input type="text" size="30" class="form-control" id='otherDbs' placeholder="Enter other databases">
+                                            <input type="text" size="20" class="form-control" id='otherDbs' placeholder="List Other DBs">
                                             </div>
-                                            <button id='interest' type="input" class="btn btn-warning btn-lg invitation_tooltip">Express Interest
+                                            <button id='interest' type="input" class="btn btn-warning btn-lg invitation_tooltip">Signup For Beta
                                             </button>
                                             <!--
 											<button type="input" class="fund_link btn btn-warning btn-lg" data-toggle="tooltip" data-placement="top" data-html="true">
@@ -139,10 +135,10 @@
                                         <% } %>
                                         <br/><br/>
                                         <span class='animation animated-item-1 benefits-caption'><b><font size='+1'>
-                                                    VPT is open source! <a id="benefits_link" class="link" style="text-decoration:underline">Click here for benefits.</a>
+                                                    <!--VPT is open source! <a id="benefits_link" class="link" style="text-decoration:underline">Click here for benefits.</a>
                                                     <!--"Give me a lever long enough ... and I will move the world," Archimedes, 230 BC. -->
                                                 </font></b></span>
-                                        <p><b>Want to install VPT in your own servers/private cloud? Contact us at contact [AT] shelloid [DOT] com.</b></p>
+                                       <!-- <p><b>Want to install VPT in your own servers/private cloud? Contact us at contact [AT] shelloid [DOT] com.</b></p>-->
                                     </div>
                                     <!--
                                     <span class='animation animated-item-1 benefits-caption'><b><font size='+1'>
@@ -169,6 +165,7 @@
 
 
 <!-- > Starting Featured service 1 <!-->
+<!--
 <section id="recent-works">
     <div class="container">
         <div class="row">
@@ -230,7 +227,7 @@
                             </div><!--/.row-->
                         </div><!--/.item-->
 
-
+<!--
                         <div class="item">
                             <div class="row">
                                 <div class="col-xs-4">
@@ -275,7 +272,7 @@
                                 </div>
                             </div><!--/.row-->
                         </div><!--/.item-->
-
+<!--
                         <div class="item">
                             <div class="row">
                                 <div class="col-xs-4">
@@ -318,15 +315,15 @@
                                     </div>
                                 </div>
                             </div><!--/.row-->
-                        </div><!--/.item-->
-
+                       <!-- </div><!--/.item-->
+<!--
                     </div>
                 </div>
             </div>
         </div><!--/.row-->
-    </div>
+    <!--</div>
 </section>
-
+-->
 <div id='cumuloid' aria-hidden='true' aria-labelledby='cumuloidLabel' role='dialog' tabindex='-1' class='modal fade'>
     <div class='modal-dialog cumuloid-dialog'>
         <div class='modal-content cumuloid-dialog-content'>
@@ -348,9 +345,9 @@
 <script>
     $(function(){
         $(window).resize(function(){
-            placeVideo();
+            //placeVideo();
         });
-        placeVideo();
+        //placeVideo();
         // hide it before it's positioned
         //$('#video').css('display','inline');
         $("#wb_video").tooltip();

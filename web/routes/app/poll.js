@@ -14,7 +14,7 @@ exports.poll = function (req, res) {
     if (req.user) {
         notify.notify_add(req.body.channel, function (channel, msg, index) {
             msg.channel = channel;
-            if ((msg.users == undefined) || (msg.users.indexOf(req.user.id) != -1) || (msg.users.indexOf("*") != "-1")) {
+            if ((msg.users == undefined) || (msg.users.length == 0) || (msg.users.indexOf(req.user.id) != -1) || (msg.users.indexOf("*") != "-1")) {
                 delete msg.users;
                 msg.channel = channel;
                 res.send(msg);

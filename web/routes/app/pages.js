@@ -14,7 +14,7 @@ exports.index = function (req, res) {
 };
 
 exports.dba = function (req, res) {
-    res.render('dba', {"title": "DBA Home - Shelloid VPT", managed: global.config.SAAS_MODE, loggedIn: req.user});
+    res.render('dba', {"title": "PerfCloud Home - Shelloid", managed: global.config.SAAS_MODE, loggedIn: req.user});
 };
 
 exports.download = function (req, res) {

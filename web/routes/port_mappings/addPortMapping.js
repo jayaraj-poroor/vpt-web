@@ -15,7 +15,7 @@ exports.index = function (req, res) {
     if (req.user) {
         var port = parseInt(req.body.portMappingNumber);
         if (req.body.portMappingNodesFrom == undefined || req.body.portMappingNumber == undefined || req.body.usePolicyInPortMap == undefined || (req.body.usePolicyInPortMap == true && req.body.portmapPolicy == undefined) ||
-        req.body.portMappingNodesTo == undefined || req.body.portMappingProtocolTcp == undefined || port <= 0 || port > 65535 || (req.body.portMappingNodesFrom == req.body.portMappingNodesTo)) {
+        req.body.portMappingNodesTo == undefined || req.body.portMappingHostName == undefined || req.body.portMappingProtocolTcp == undefined || port <= 0 || port > 65535 || (req.body.portMappingNodesFrom == req.body.portMappingNodesTo)) {
             res.send({msg: "Please provide valid data.", status: 500});
         }
         else {
@@ -38,12 +38,12 @@ exports.index = function (req, res) {
                 })
                 .query(function () {
                     var sql;
-                    var params = [req.body.portMappingNodesFrom, req.body.portMappingNumber, req.body.portMappingNodesTo, req.body.portMappingProtocolTcp == true ? "TCP" : "UDP"];
+                    var params = [req.body.portMappingNodesFrom, req.body.portMappingNumber, req.body.portMappingNodesTo, req.body.portMappingProtocolTcp == true ? "TCP" : "UDP", req.body.portMappingHostName];
                     if (req.body.usePolicyInPortMap == true){
-                        sql = "INSERT INTO port_maps (`svc_dev_id` ,`svc_port` ,`mapped_dev_id` ,`mapped_port` ,`protocol`, `last_update_ts`, `access_policy_id`) VALUES (?, ?, ?, -1, ?, CURRENT_TIMESTAMP, ?)";
+                        sql = "INSERT INTO port_maps (`svc_dev_id` ,`svc_port` ,`mapped_dev_id` ,`mapped_port` ,`protocol`, `last_update_ts`, `svc_host`, `access_policy_id`) VALUES (?, ?, ?, -1, ?, CURRENT_TIMESTAMP, ?, ?)";
                         params.push(req.body.portmapPolicy);
                     } else {
-                        sql = "INSERT INTO port_maps (`svc_dev_id` ,`svc_port` ,`mapped_dev_id` ,`mapped_port` ,`protocol`, `last_update_ts`) VALUES (?, ?, ?, -1, ?, CURRENT_TIMESTAMP)";
+                        sql = "INSERT INTO port_maps (`svc_dev_id` ,`svc_port` ,`mapped_dev_id` ,`mapped_port` ,`protocol`, `last_update_ts`, `svc_host`) VALUES (?, ?, ?, -1, ?, CURRENT_TIMESTAMP, ?)";
                     }
                     return {
                         query: sql,
@@ -78,7 +78,7 @@ exports.index = function (req, res) {
                             policyText = rows[0].policy_text;
                         }
                     }
-                    utils.sendToDevice(req.body.portMappingNodesFrom, {type: "OPEN_PORT", portMapId: insertId + "", svcPort: req.body.portMappingNumber, appName: appName, policy_text: policyText, policyId: req.body.portmapPolicy}, function () {
+                    utils.sendToDevice(req.body.portMappingNodesFrom, {type: "OPEN_PORT", portMapId: insertId + "", svcHost: req.body.portMappingHostName, svcPort: req.body.portMappingNumber, appName: appName, policy_text: policyText, policyId: req.body.portmapPolicy}, function () {
                         res.send({status: 200, insertId: insertId, svcDevUserName: fromDevInfo.userName, mappedDevUserName: toDevInfo.userName});
                     }, function (err) {
                         res.send({msg: err, status: 201});

@@ -40,7 +40,7 @@ function pollForNewPortMaps(){
                 if (resp.status == 200) {
                     if (!isThereInDataSet(portMapDataset, "portMapping" + portMapId)) {
                         numOfPortMappings++;
-                        portMapDataset.push(getNewPortMappingRow(true, numOfPortMappings, resp.info.id, resp.info.fromDeviceName, resp.info.fromPort, resp.info.toDeviceName, resp.info.toPort, resp.info.date, resp.info.protocol, resp.info.disabled, resp.info.fromDeviceUserName, resp.info.toDeviceUserName, resp.info.access_policy_id, resp.info.access_policy_name, resp.info.access_policy_desc));
+                        portMapDataset.push(getNewPortMappingRow(true, numOfPortMappings, resp.info.id, resp.info.fromDeviceName, resp.info.svc_host, resp.info.fromPort, resp.info.toDeviceName, resp.info.toPort, resp.info.date, resp.info.protocol, resp.info.disabled, resp.info.fromDeviceUserName, resp.info.toDeviceUserName, resp.info.access_policy_id, resp.info.access_policy_name, resp.info.access_policy_desc));
                         refreshPortMappingsList(true);
                         bindToolTip();
                     }
@@ -108,7 +108,7 @@ function pollForPortMappings(id) {
         if (res.from == "db") {
             status = res.status;
         } else {
-            status = res.action;ko
+            status = res.action;
         }
         switch (status) {
             case PORT_MAP_DELETED:
@@ -128,7 +128,7 @@ function pollForPortMappings(id) {
             {
                 var toPort;
                 var fn = function (desc){
-                    updateDataSet(portMapDataset, "portMapping" + id, "6", '<span class="mappedPortColTitle" data-toggle="tooltip" data-placement="top" data-html="true" title="The service can be accessed at localhost:'+toPort+' from the guest device.' +desc+ '">' + toPort + "</span>");
+                    updateDataSet(portMapDataset, "portMapping" + id, "6", '<span class="mappedPortColTitle" data-toggle="tooltip" data-placement="top" data-html="true" title="The service can be accessed at localhost:'+toPort+' from the guest device.' +desc+ '"><a onclick="showPortMapDesc(\''+desc+'\')">' + toPort + "</a></span>");
                     showPortMapDataTable();
                     bindToolTip();
                 };
@@ -176,7 +176,7 @@ function refreshPortMappingsList(addPoll) {
             portMapDataset = [];
             for (var i = 0; i < resp.list.length; i++) {
                 numOfPortMappings++;
-                portMapDataset.push(getNewPortMappingRow(addPoll, i + 1, resp.list[i].id, resp.list[i].fromDeviceName, resp.list[i].fromPort, resp.list[i].toDeviceName, resp.list[i].toPort, new Date(resp.list[i].date), resp.list[i].protocol, resp.list[i].disabled, resp.list[i].fromDeviceUserName, resp.list[i].toDeviceUserName, resp.list[i].access_policy_id, resp.list[i].access_policy_name, resp.list[i].access_policy_desc));
+                portMapDataset.push(getNewPortMappingRow(addPoll, i + 1, resp.list[i].id, resp.list[i].fromDeviceName,resp.list[i].svc_host,  resp.list[i].fromPort, resp.list[i].toDeviceName, resp.list[i].toPort, new Date(resp.list[i].date), resp.list[i].protocol, resp.list[i].disabled, resp.list[i].fromDeviceUserName, resp.list[i].toDeviceUserName, resp.list[i].access_policy_id, resp.list[i].access_policy_name, resp.list[i].access_policy_desc));
             }
             showPortMapDataTable();
             $("[data-toggle='tooltip']").tooltip();
@@ -198,6 +198,7 @@ function showPortMapDataTable() {
         "columns": [
             { "data": "0" },
             { "data": "1" },
+            { "data": "11" },
             { "data": "2" },
             { "data": "3" },
             { "data": "10"},
@@ -228,6 +229,7 @@ var addPortMappingForm = function () {
                 portMappingNodesFrom: undefined,
                 portMappingNumber: undefined,
                 portmapPolicy: undefined,
+                portMappingHostName: undefined,
                 portMappingNodesTo: undefined
             };
             fillModel(form.obj, data);
@@ -247,7 +249,7 @@ var addPortMappingForm = function () {
                             bootbox.alert("<b>An error has occurred while adding the device.</b><br/>" + (typeof resp.msg == "string" ? resp.msg : "Probably a same mapping exists."));
                         }
                         else {
-                            portMapDataset.push(getNewPortMappingRow(true, numOfPortMappings++, resp.insertId, $("#portMappingNodesFrom").find(":selected").text(), data.portMappingNumber, $("#portMappingNodesTo").find(":selected").text(), "", new Date(), data.portMappingProtocolTcp == true ? "TCP" : "UDP", 0, resp.svcDevUserName, resp.mappedDevUserName, data.accessPolicyId, $("#portmapPolicy").find(":selected").text(), undefined));
+                            portMapDataset.push(getNewPortMappingRow(true, numOfPortMappings++, resp.insertId, $("#portMappingNodesFrom").find(":selected").text(), data.portMappingHostName, data.portMappingNumber, $("#portMappingNodesTo").find(":selected").text(), "", new Date(), data.portMappingProtocolTcp == true ? "TCP" : "UDP", 0, resp.svcDevUserName, resp.mappedDevUserName, data.accessPolicyId, $("#portmapPolicy").find(":selected").text(), undefined));
                             showPortMapDataTable();
                             $("#addPortMappingCancelBtn").click();
                             if (resp.status != 200) {
@@ -328,7 +330,7 @@ function updateNodeListInPortMappings() {
     });
 }
 
-function getNewPortMappingRow(addPoll, seqNo, id, portMappingNodesFrom, portMappingNumber, portMappingNodesTo, toPort, date, protocol, disabled, fromUserName, toUserName, accessPolicyId, accessPolicyName, credentials) {
+function getNewPortMappingRow(addPoll, seqNo, id, portMappingNodesFrom, svc_host, portMappingNumber, portMappingNodesTo, toPort, date, protocol, disabled, fromUserName, toUserName, accessPolicyId, accessPolicyName, credentials) {
     var formattedDate = moment(date).format("D MMM YYYY, h:mm a");
     if (toPort == undefined){
         toPort = "";
@@ -348,15 +350,22 @@ function getNewPortMappingRow(addPoll, seqNo, id, portMappingNodesFrom, portMapp
         "10": apName,
         "5": toUserName,
         "4": portMappingNodesTo,
-        "6": (isEmptyString(toPort) ? "Not ready" : '<span class="mappedPortColTitle" data-toggle="tooltip" data-placement="top" data-html="true" title="'+apDesc+'">' + toPort + "</span>"),
+        "6": (isEmptyString(toPort) ? "Not ready" : '<span class="mappedPortColTitle" data-toggle="tooltip" data-placement="top" data-html="true" title="'+apDesc+'"><a onclick="showPortMapDesc(\''+apDesc+'\')">' +toPort + "</a></span>"),
         "7": formattedDate,
         "8": '<span class="glyphicon glyphicon-remove" onclick="deletePortMapping(' + id + ')" data-toggle="tooltip" data-placement="top" title="Remove Port map"></span>',
-        "9": disabled
+        "9": disabled,
+        "11": svc_host
     };
     if (addPoll == true) {
         pollForPortMappings(id);
     }
     return row;
+}
+
+function showPortMapDesc(desc){
+    if (desc != null && desc != undefined && desc != "<br/><br/>" && desc.length > 0) {
+        bootbox.alert(desc);
+    }
 }
 
 function deletePortMapping(id) {
@@ -389,4 +398,9 @@ function addPolicyInPortMapList(id, name){
     } else {
         $("#portmapPolicy option[value="+id+"]").text(name);
     }
+}
+
+function removePolicyInPortMapList(id, name){
+    /* it will be called from policies.js  */
+    $("#portmapPolicy option[value="+id+"]").remove();
 }

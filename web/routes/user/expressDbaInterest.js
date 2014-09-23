@@ -14,8 +14,8 @@ exports.index = function (req, res) {
     easydb(dbPool)
         .query(function () {
             return {
-                query: "INSERT INTO dba_interested_users (email_id, name, dba_interested_users.databases) VALUES (?, ?, ?)",
-                params: [decodeURIComponent(req.body.email), req.body.name, req.body.databases]
+                query: "INSERT INTO dba_interested_users (email_id, name, mysql_selected, other_databases) VALUES (?, ?, ?, ?)",
+                params: [decodeURIComponent(req.body.email), req.body.name, req.body.mysql_selected, req.body.databases]
             };
         })
         .success(function (rows) {

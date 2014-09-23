@@ -59,6 +59,7 @@ var addPoliciesForm = function () {
                             $("#sPolicyName").val("");
                             $("#sPolicyApp").val("-1");
                             $("#addPolicyCancelBtn").click();
+                            $("[data-toggle='tooltip']").tooltip();
                         }
                         else {
                             console.log(resp);
@@ -138,7 +139,7 @@ function loadAppSpecificEditor(json){
             }
         }
         var app = selected.text();
-        if (policyAppCache[app] == undefined) {
+        //if (policyAppCache[app] == undefined) {
             addWaitingOverlay();
             doPost("/loadPolicyApp", {name: app}, function (resp) {
                 removeWaitingOverlay();
@@ -154,10 +155,10 @@ function loadAppSpecificEditor(json){
                     bootbox.alert("Server Error: " + err.error);
                 }
             });
-        } else {
-            $('#appContent').html(policyAppCache[app]);
-            fn();
-        }
+        //} else {
+        //    $('#appContent').html(policyAppCache[app]);
+        //    fn();
+        //}
     }
 }
 
@@ -172,6 +173,7 @@ function refreshPoliciesList() {
                 addPolicyInPortMapList(resp.list[i].policy_id, resp.list[i].policy_name);
             }
             showPolicyDataTable();
+            $("[data-toggle='tooltip']").tooltip();
         }
         else {
             bootbox.alert("<b>An error has occurred while listing the policies.</b><br/>" + (typeof resp.msg == "string" ? resp.msg : ""));
@@ -291,5 +293,6 @@ function deletePolicy(id) {
 
 function removePolicyFromTableAndRefresh(id) {
     removeFromDataset(policyDataSet, "policy" + id);
+    removePolicyInPortMapList(id);
     showPolicyDataTable();
 }
