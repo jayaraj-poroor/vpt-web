@@ -278,6 +278,7 @@ app.use(app.router);
 app.get('/', pages.index);
 app.get('/download', pages.download);
 app.get('/console', pages.console);
+app.get('/perfcloud', pages.perfcloud);
 app.get('/terms', pages.terms);
 app.post('/signin', signin.index);
 app.post('/signout', signout.index);

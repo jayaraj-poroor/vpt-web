@@ -17,6 +17,10 @@ exports.download = function (req, res) {
     res.render('download', {"title": "Downloads - Shelloid VPT", managed: global.config.SAAS_MODE, loggedIn: req.user});
 };
 
+exports.perfcloud = function (req, res) {
+    res.render('perfcloud', {"title": "PerfCloud Home - Shelloid", managed: global.config.SAAS_MODE, loggedIn: req.user});
+};
+
 exports.terms = function (req, res) {
     res.render('terms', {"title": "Terms and conditions - Shelloid VPT", managed: global.config.SAAS_MODE, loggedIn: req.user});
 };
