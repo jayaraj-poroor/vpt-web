@@ -174,6 +174,7 @@ var pages = require('./routes/app/pages'),
     getNewDeviceSecret = require('./routes/app/deviceSecret'),
     getDeviceInfo = require('./routes/devices/getDeviceInfo'),
     getPortMapInfo = require('./routes/port_mappings/getPortMapInfo'),
+    expressDbaInterest = require('./routes/user/expressDbaInterest'),
     getVersion = require('./routes/app/getVersion');
 
 
@@ -282,6 +283,7 @@ app.get('/perfcloud', pages.perfcloud);
 app.get('/terms', pages.terms);
 app.post('/signin', signin.index);
 app.post('/signout', signout.index);
+app.post('/expressDbaInterest', expressDbaInterest.index);
 app.post('/getUserInfo', getUserInfo.index);
 app.post('/getUserInfoById', getUserInfo.byId);
 app.post('/isSessionActive', isSessionActive.index);
