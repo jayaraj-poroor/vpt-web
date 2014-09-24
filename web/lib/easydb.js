@@ -93,7 +93,7 @@ function _execute_queries(easyDb) {
                     }
                     catch (e) {
                         if (easyDb.errorH)
-                            easyDb.errorH(e.message);
+                            easyDb.errorH(e);
                         _rollback_txn(easyDb);
                         proceed = false;
                     }

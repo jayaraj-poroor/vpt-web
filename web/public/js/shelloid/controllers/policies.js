@@ -88,12 +88,14 @@ function setupAddPolicyHandlers() {
     $("#addPolicyPanelBtn").click(function (e) {
         e.preventDefault();
         $("#addPolicyPanel").show("fast");
+        $(".policyListTbl").hide("fast");
         $("#appContent").empty();
         $("#addPolicyPanelBtn").hide();
     });
     $("#addPolicyCancelBtn").click(function (e) {
         e.preventDefault();
         $("#addPolicyPanel").hide("fast");
+        $(".policyListTbl").show("fast");
         $("#addingNewPolicy").val("true");
         $("#editingPolicyId").val("");
         $("#sPolicyName").val("");
@@ -139,7 +141,7 @@ function loadAppSpecificEditor(json){
             }
         }
         var app = selected.text();
-        //if (policyAppCache[app] == undefined) {
+        if (policyAppCache[app] == undefined) {
             addWaitingOverlay();
             doPost("/loadPolicyApp", {name: app}, function (resp) {
                 removeWaitingOverlay();
@@ -155,10 +157,10 @@ function loadAppSpecificEditor(json){
                     bootbox.alert("Server Error: " + err.error);
                 }
             });
-        //} else {
-        //    $('#appContent').html(policyAppCache[app]);
-        //    fn();
-        //}
+        } else {
+            $('#appContent').html(policyAppCache[app]);
+            fn();
+        }
     }
 }
 
@@ -226,6 +228,7 @@ function editPolicy(id) {
         if (resp.status == 200) {
             var node = $("#policy" + id).children();
             $("#addPolicyPanel").show("fast");
+            $(".policyListTbl").hide("fast");
             $("#addPolicyPanelBtn").hide();
             $("#editingPolicyId").val(id);
             $("#sPolicyName").val(node.eq(0).text());

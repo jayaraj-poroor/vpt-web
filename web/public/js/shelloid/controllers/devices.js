@@ -133,11 +133,14 @@ function setupAddNodeHandlers() {
         getNewDeviceSecret();
         getNewDeviceKey();
         $("#addNodePanel").show("fast");
+        $(".nodesListTbl").hide("fast");
         $("#addNodePanelBtn").hide();
+        $("#addNodePanel .panel-title").text("Add New Device");
     });
     $("#addNodeCancelBtn").click(function (e) {
         e.preventDefault();
         $("#addNodePanel").hide("fast");
+        $(".nodesListTbl").show("fast");
         $("#addingNewNode").val("true");
         $("#editingNodeId").val("");
         $("#sNodeName").val("");
@@ -265,10 +268,12 @@ function getType(type) {
 function editNode(id) {
     var node = $("#node" + id).children();
     $("#addNodePanel").show("fast");
+    $(".nodesListTbl").hide("fast");
     $("#addNodePanelBtn").hide();
     $("#editingNodeId").val(id);
     $("#sNodeName").val(node.eq(0).text());
     $("#sNodeSecret").val(node.eq(2).text());
+    $("#addNodePanel .panel-title").text("Edit Device");
 
 
     $('#sNodeType option').each(function() {

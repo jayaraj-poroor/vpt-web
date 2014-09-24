@@ -19,6 +19,7 @@ coverage
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 web-addon
+addon_views
 
 # Dependency directory
 # Deployed apps should consider commenting this line out:

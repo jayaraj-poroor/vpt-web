@@ -283,11 +283,13 @@ function setupAddPortMappingHandlers() {
     $("#addPortMappingPanelBtn").click(function (e) {
         e.preventDefault();
         $("#addPortMappingPanel").show("fast");
+        $(".portMappingListTbl").hide("fast");
         $("#addPortMappingPanelBtn").hide();
     });
     $("#addPortMappingCancelBtn").click(function (e) {
         e.preventDefault();
         $("#addPortMappingPanel").hide("fast");
+        $(".portMappingListTbl").show("fast");
         resetAddPortMappingForm();
         $("#addPortMappingPanelBtn").show();
     });

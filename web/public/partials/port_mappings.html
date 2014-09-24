@@ -15,20 +15,20 @@
                 <input type="hidden" id="addingNewPortMapping" value="true"/>
                 <input type="hidden" id="editingPortMappingId" value="-1"/>
                 <div class='form-group'>
-                    <label>Select Host Device</label>
+                    <label>Host Device</label>
                     <select id="portMappingNodesFrom" class="form-control portMappingNodes" required>
                     </select>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label>Select Service Host</label>
+                            <label>Service Host</label>
                             <input type="text" id="portMappingHostName" class="form-control" placeholder="The device in which the service is running" required value="localhost"/>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>Select Service Name/Port</label>
+                            <label>Service Name/Port</label>
                             <input type="text" id="portMappingNumber" class="form-control" placeholder="Port Number/Service Name" required/>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <input type="checkbox" id="usePolicyInPortMap" disabled><label for="usePolicyInPortMap">&nbsp;&nbsp;Use Policy?</label>
+                        <input type="checkbox" id="usePolicyInPortMap" disabled><label for="usePolicyInPortMap">&nbsp;&nbsp;Use access policy?</label>
                         <div class="form-group">
                             <select id="portmapPolicy" class="form-control" disabled>
                             </select>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class='form-group'>
-                    <label>Select Guest Device</label>
+                    <label>Guest Device</label>
                     <select id="portMappingNodesTo" class="form-control portMappingNodes" required>
                     </select>
                 </div>
@@ -67,7 +67,7 @@
             </form>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive portMappingListTbl">
         <table class="table table-striped table-hover table-condensed table-responsive" id="portMappingListTbl" style="width: 100%">
             <thead>
             <!--<th class="col-sm-1">#</th>-->
