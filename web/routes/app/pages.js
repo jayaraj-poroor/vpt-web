@@ -13,8 +13,8 @@ exports.index = function (req, res) {
     res.render('index', {"title": "Home - Shelloid VPT", managed: global.config.SAAS_MODE, loggedIn: req.user});
 };
 
-exports.perfCloud = function (req, res) {
-    res.render('perfcloud', {"title": "PerfCloud Home - Shelloid", managed: global.config.SAAS_MODE, loggedIn: req.user});
+exports.dbmon = function (req, res) {
+    res.render('dbmon', {"title": "DB Monitoring Add-on - Shelloid VPT", managed: global.config.SAAS_MODE, loggedIn: req.user});
 };
 
 exports.download = function (req, res) {

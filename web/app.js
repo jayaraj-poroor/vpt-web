@@ -284,7 +284,7 @@ app.get('/', pages.index);
 app.get('/download', pages.download);
 app.get('/console', pages.console);
 app.get('/terms', pages.terms);
-app.get('/perfcloud', pages.perfCloud);
+app.get('/dbmon', pages.dbmon);
 app.post('/signin', signin.index);
 app.post('/signout', signout.index);
 app.post('/expressDbaInterest', expressDbaInterest.index);

@@ -43,7 +43,7 @@
             doPost("/expressDbaInterest", data, function (resp) {
                 removeWaitingOverlay();
                 if (resp.status == 200) {
-                    bb_alert("Success", "Thank you for the PerfCloud beta sign up. We will notify you via email when the beta is ready.", function () {
+                    bb_alert("Success", "Thank you for the DB monitoring add-on beta sign up. We will notify you via email when the beta is ready.", function () {
                         $("#username").val("");
                         $("#email").val("");
                         $("#invitationCode").val("");
@@ -99,7 +99,7 @@
 								    <span class='animation animated-item-1 benefits-caption'>
                                         <b>
                                             <font size='+1'>
-                                                Shelloid PerfCloud is a cloud service that continuously monitors the database performance and suggests actions to improve scalability and performance.
+                                                Shelloid DB monitoring add-on enables monitoring the performance of your databases securely from your own devices. The add-on is absolutely free for all registered VPT users.
                                             </font>
                                         </b>
                                     </span>
