@@ -271,12 +271,14 @@ app.use(function (req, res, next) {
         var url = "http://doc.shelloid.com:8080" + req.path;
         res.redirect(url);
     } else {
+	/*
         if(proto == "http"){
             var url = "https://" + req.host + req.path;
             res.redirect(url);
         } else {
+		*/
             return next();
-        }
+        /*}*/
     }
 });
 app.use(app.router);
