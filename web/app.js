@@ -325,7 +325,7 @@ app.use(function (req, res, next) {
     }
     res.type('txt').send('Not found');
 });
-
+/*
 var privateKey  = fs.readFileSync(global.config.SSL_KEY, 'utf8');
 var chain = fs.readFileSync(global.config.SSL_CHAIN, 'utf8');
 
@@ -334,8 +334,8 @@ var credentials = {key: privateKey, cert: chain};
 var server = https.createServer(credentials, app).listen(global.config.APP_PORT, global.config.APP_HOST, function () {
     console.log("App running on " + global.config.APP_HOST + ":" + global.config.APP_PORT + " in " + process.env.NODE_ENV + " mode.");
 });
-
-http.createServer(function (req, res) {
+*/
+var server = http.createServer(function (req, res) {
     res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
     res.end();
 }).listen(global.config.APP_SECONDARY_PORT);
